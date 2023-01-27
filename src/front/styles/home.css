@@ -1,7 +1,113 @@
-/*
-    home.css: This website contains selectors only used in home.css
+/* title */
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.h1-title{
+    font-family: 'Montserrat-Black', sans-serif;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(36, 131, 232), rgb(174, 48, 237),rgb(248, 59, 81));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+    
+
+
+/* featured */
+
+.featured-box{
+    text-align: center;
+}
+
+.icon-colorful:hover{
+    
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(36, 131, 232), rgb(174, 48, 237),rgb(248, 59, 81));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.icon-colorful{
+    color: white;
+}
+
+
+#features{
+    padding: 7% 10%;
+    background: -webkit-linear-gradient(rgb(52, 47, 47),rgb(0, 0, 0));
+  
+}
+
+.h3-features{
+    font-family: 'Montserrat-Black', sans-serif;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.p-features{
+    font-family: 'Montserrat-thin', sans-serif;
+    color: white;
+}
+
+/* carousel */
+
+#carousel{
+    padding: 7%, 15%;
+    text-align: center;
+    font-family: 'Montserrat-black', sans-serif;
+    
+}
+
+.carousel-1-img{
+    object-fit: cover;
+    width: 700px;
+    height: 650px;
+    padding: 7%, 15%;
+}
+
+.h2-carousel{
+    font-family: 'Montserrat-black', sans-serif;
+    font-size: 3rem;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(254, 2, 31));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* pricing */
+
+#pricing{
+    padding: 7% 15%;
+    text-align: center;
+}
+
+.h2card{
+    font-family: 'Montserrat-black', sans-serif;
+    font-size: 3rem;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(161, 38, 202),rgb(230, 52, 236));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.p-cards{
+    font-family: 'Montserrat-black', sans-serif;
+
+}
+
+/* cta*/
+
+#cta{
+    padding: 7% 10%;
+    background: -webkit-linear-gradient(rgb(52, 47, 47),rgb(0, 0, 0));
+}
+
+.h3-cta{
+    font-family: 'Montserrat-Black', sans-serif;
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.p-cta{
+    font-family: 'Montserrat-thin', sans-serif;
+    font-size: 1rem;
+    color: rgb(139, 139, 139);
+}
