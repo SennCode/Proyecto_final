@@ -1,0 +1,16 @@
+.body-Category_list{
+    background-image: linear-gradient(to bottom,#ffffff, #e7e3e9, #e3e0e6, #ffffff);
+}
+
+.padindg_category_list{
+    padding: 7% 10%;
+    font-family: 'Montserrat-black', sans-serif;
+}
+
+.h3_category_list{
+    font-family: 'Montserrat-Black', sans-serif;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(248, 59, 81));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

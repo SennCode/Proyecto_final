@@ -1,34 +1,79 @@
-.navbar-color{
-    background: rgb(255, 255, 255);
-    
-                                                
-}
-.navbar-brand{
-    font-family: 'Montserrat-Black', sans-serif;
-    font-size: 1.5rem;
+.nav-item {
+  font-size: 20px;
 }
 
-
-.fa-user-circle{
-    color: rgb(0, 0, 0);
-    height: 30px;
-    width: 30px;
+.navbar-color {
+  background: rgb(255, 255, 255);
+}
+.navbar-brand {
+  font-family: "Montserrat-Black", sans-serif;
+  font-size: 1.5rem;
 }
 
-.container-nav{
-    padding: 3% 15%;
+.container-nav {
+  padding: 3% 15%;
+  padding-bottom: 20px;
 }
 
-.hover-navbar{
-
-    color: rgb(0, 0, 0);
+.hover-navbar {
+  color: rgb(0, 0, 0);
 }
 
 .hover-navbar:hover {
-    
-    color: rgb(174, 48, 237);
+  background: -webkit-linear-gradient(rgb(13, 60, 245), rgb(232, 97, 237));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
+}
+
+/* menu user */
+
+.fa-user-circle {
+  color: rgb(0, 0, 0);
+  height: 30px;
+  width: 30px;
+}
+
+.background_user_dropdown {
+  background: -webkit-linear-gradient(rgb(94, 92, 92), rgb(0, 0, 0));
+}
+
+.dropdown-item-backgorund {
+  color: rgb(254, 253, 255) !important;
+}
+
+.dropdown-item-backgorund:hover {
+  background: linear-gradient(to bottom, rgb(103, 177, 243), rgb(149, 0, 255));
+}
+
+/* --- boton search --- */
+.button_search {
+  display: flex;
+  background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
+  font-family: inherit;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 1s;
+
+  align-items: center;
+}
+.button_search:hover {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.navbar-search {
+  position: relative;
+  right: 0;
+}
+
+@media screen and (max-width: 1080px) {
+  .navbar-search {
+    position: static;
+    margin: 0 auto;
+    width: 70%;
+  }
 }

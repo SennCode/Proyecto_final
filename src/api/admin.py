@@ -1,9 +1,8 @@
 
 import os
 from flask_admin import Admin
-from .models import db, User, Product, Category, Gender, Clothes, Img, Favorites
+from .models import db, User, Files3D, Patterns, Favorites
 from flask_admin.contrib.sqla import ModelView
-
 
 def setup_admin(app):
     app.secret_key = os.environ.get('FLASK_APP_KEY', 'sample key')
@@ -12,12 +11,10 @@ def setup_admin(app):
 
     # Add your models here, for example this is how we add a the User model to the admin
     admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Product, db.session))
-    admin.add_view(ModelView(Category, db.session))
-    admin.add_view(ModelView(Gender, db.session))
-    admin.add_view(ModelView(Clothes, db.session))
-    admin.add_view(ModelView(Img, db.session))
+    admin.add_view(ModelView(Files3D, db.session))
+    admin.add_view(ModelView(Patterns, db.session))
     admin.add_view(ModelView(Favorites, db.session))
+    
 
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session))

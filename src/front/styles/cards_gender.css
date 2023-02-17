@@ -1,0 +1,62 @@
+#cards_gender {
+  padding: 2% 10%;
+}
+
+.h5_card_gender {
+  font-family: "Montserrat-black", sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.p_card_gender {
+  font-family: "Montserrat-black", sans-serif;
+  font-weight: lighter;
+}
+
+.card_gender_background {
+  border: 0.2px solid rgb(255, 255, 255);
+  transition: border 0.1s;
+}
+
+.card_gender_background:hover {
+  background: linear-gradient(
+    to bottom,
+    rgb(232, 228, 228),
+    rgb(225, 225, 223),
+    rgb(134, 133, 133)
+  );
+}
+
+.card_gender_border {
+  border: 1px solid rgb(251, 251, 251);
+  transition: border 0.1s;
+}
+
+.card_gender_border:hover {
+  border: 1px solid rgb(171, 114, 245);
+}
+
+.h5_gender_border {
+  border-bottom: 2px solid rgb(170, 102, 243);
+  margin-bottom: 30px;
+}
+
+.container_foto:hover {
+  cursor: pointer;
+}
+
+.container_foto:hover img {
+  
+  transform: scale(1.1);
+
+}
+
+.title_categories{
+  font-family: 'Montserrat-black', sans-serif;
+    font-size: 3rem;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(254, 2, 31));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+

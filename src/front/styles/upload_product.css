@@ -1,0 +1,16 @@
+.container_uploadProduct {
+    padding: 7% 15%;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .h3-upload{
+    font-family: 'Montserrat-Black', sans-serif;
+    line-height: 1.5;
+    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(248, 59, 81));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.img_upload_sizes{
+  height: 150px;
+  width: auto;
+}
