@@ -45,7 +45,7 @@ function UploadProduct() {
           {/* -- Category -- */}
           <select
             className="form-select form-select-sm borders_upload"
-            aria-label=".form-select-sm example"
+            aria-label=".form-select-sm example "
           >
             <option selected>Category</option>
             <option value="1">3Dfiles</option>
@@ -89,7 +89,7 @@ function UploadProduct() {
           </select>
           {/* -- File Type -- */}
           <select
-            className="form-select form-select-sm borders_upload"
+            className="form-select form-select-sm borders_upload mb-3"
             aria-label=".form-select-sm example"
           >
             <option selected>File type</option>
@@ -97,6 +97,17 @@ function UploadProduct() {
             <option value="2">.zprj</option>
             <option value="3">.dxf</option>
             <option value="4">.tiff</option>
+          </select>
+
+          {/* -- Gender -- */}
+          <select
+            className="form-select form-select-sm borders_upload"
+            aria-label=".form-select-sm example"
+          >
+            <option selected>Gender</option>
+            <option value="1">Men</option>
+            <option value="2">Women</option>
+            <option value="3">Children</option>
           </select>
         </div>
       </div>

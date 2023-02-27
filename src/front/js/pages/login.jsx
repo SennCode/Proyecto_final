@@ -1,7 +1,24 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Context } from "../store/appContext.js";
 
-function Login(){
+function Login() {
+  const { store, actions } = useContext(Context);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (email, password) => {
+    try {
+      await actions.loginUser(email, password);
+      navigate('/profile');
+    } catch (error) {
+      alert('Ha ocurrido un error al intentar iniciar sesión. Por favor, verifica tus credenciales y vuelve a intentarlo.');
+    }
+  };
+  
+  
+
     return(
         <section className="text-create-account mb-5 pb-5">
       <div className="container py-5 h-100">
@@ -27,8 +44,10 @@ function Login(){
                         className="form-control"
                         id="floatingInput"
                         placeholder="name@example.com"
+                        value={email}
+                        onChange={(e) => {setEmail(e.target.value)}}
                       />
-                      <label for="floatingInput">Email</label>
+                      <label htmlFor="floatingInput">Email</label>
                     </div>
 
                     {/* password */}
@@ -39,8 +58,10 @@ function Login(){
                         className="form-control"
                         id="floatingPassword"
                         placeholder="Password"
+                        value={password}
+                        onChange={(e) => {setPassword(e.target.value)}}
                       />
-                      <label for="floatingPassword">Password</label>
+                      <label htmlFor="floatingPassword">Password</label>
                     </div>
 
                     {/* button */}
@@ -48,8 +69,14 @@ function Login(){
                     <div className="text-center pt-1 mb-5 pb-1">
                       <div className="d-grid gap-2">
                         <button
-                          className="btn btn-primary btn-block gradient-custom-2 mb-3"
+                          className="btn btn-primary btn-block button_create_user mb-3"
                           type="button"
+                  
+                          onClick={()=> { 
+                            console.log(email)
+                            console.log(password)
+                            handleLogin(email, password)
+                          }}
                         >
                           Login
                         </button>

@@ -1,7 +1,7 @@
 .gradient-custom-2 {
   /* fallback for old browsers */
   background: rgb(171, 28, 238);
-
+  
   /* Chrome 10-25, Safari 5.1-6 */
   background: -webkit-linear-gradient(
     to right,
@@ -31,15 +31,35 @@
 }
 
 .text-create-account {
-  font-family: "Montserrat-Black", sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  font-size: 1.2rem;
   
 }
 
 .h1_title_create_acount{
-    font-family: 'Montserrat-Black', sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
     line-height: 1.5;
-    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(252, 0, 29));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-    
+}
+
+.button_create_user {
+  background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
+  font-family: inherit;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 1s;
+
+  align-items: center;
+}
+.button_create_user:hover {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.alert-success {
+  background-color: #3f51b5;
+  color: #ffffff;
 }

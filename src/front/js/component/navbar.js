@@ -1,18 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "/workspace/react-flask-hello/src/front/styles/navbar.css";
+import config from "../store/config";
 
 export const Navbar = () => {
+  const [ isOpen, setIsOpen ] = useState(false);
+  const [ files, setFiles ] = useState([]);
+  const [ search, setSearch ] = useState("");
+  const results = async e =>{
+    e.preventDefault()
+    await fetch(`${config.HOSTNAME}/api/store/${search}`)
+    .then(response => response.json())
+    .then(data => {
+      setFiles(data)
+      console.log(data)
+      
+    })
+   
+  };
+
+  const changeState = e =>{
+    setSearch(e.target.value)
+    console.log(e.target.value)
+  }
+  let resultado = []
+  if (!search){
+    resultado = files
+  }
+
+  const selectNavbar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className="container-fluid container-nav">
       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
         <div className="container-fluid">
           <Link to="/">
-            <h2 className="navbar-brand text-dark ms-5" href="#">
-              3Dclothes
-            </h2>
+            <h2 className="navbar-brand text-info ms-5">3Dclothes</h2>
           </Link>
-        
+
           {/* --- Navegacion --- */}
           <button
             className="navbar-toggler text-light"
@@ -22,40 +53,57 @@ export const Navbar = () => {
             aria-controls="navbarTogglerDemo02"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            onClick={selectNavbar}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="collapse navbar-collapse " id="navbarTogglerDemo02">
+          <div
+            className={`${isOpen ? "show" : ""} collapse navbar-collapse`}
+            id="navbarTogglerDemo02"
+          >
             <ul className="navbar-nav ms-auto me-5">
               <li className="nav-item ms-3">
-                <Link to="/Files3D" className=" hover-navbar">
-                  3Dfiles
+                <Link
+                  to="/files3d_category"
+                  className=" hover-navbar"
+                  onClick={handleLinkClick}
+                >
+                  3DFiles
                 </Link>
               </li>
               <li className="nav-item ms-3">
-                <Link to="/Patterns" className=" hover-navbar">
+                <Link
+                  to="/patterns_category"
+                  className=" hover-navbar"
+                  onClick={handleLinkClick}
+                >
                   Patterns
                 </Link>
               </li>
               <li className="nav-item ms-3">
-                <a className=" hover-navbar" href="#">
+                <Link
+                  to="/prints_category"
+                  className=" hover-navbar"
+                  onClick={handleLinkClick}
+                >
                   Prints
-                </a>
+                </Link>
               </li>
             </ul>
             {/* --- Search --- */}
-          <form className ="d-flex container-fluid mt-2" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn button_search" type="submit">
-            <i className="fa fa-search"></i>
-            </button>
-          </form>
+            <form className="d-flex container-fluid mt-2" role="search" onSubmit={results}>
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={changeState}
+              />
+              <button className="btn button_create_user" type="submit">
+                <i className="fa fa-search"></i>
+              </button>
+            </form>
 
             {/* DESPLEGABLE USUARIO */}
 

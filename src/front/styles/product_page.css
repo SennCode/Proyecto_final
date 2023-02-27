@@ -1,20 +1,16 @@
 .container_product_page {
-  padding: 7% 15%;
-}
+  padding: 7% 8%;
+  padding-top: 5%;
+  display: flex;
 
-.img_product_page {
-  border: 1px solid rgba(149, 0, 255, 0.358);
 }
 
 .button_product_page {
-  display: flex;
   background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
   font-family: inherit;
   color: #fff;
   text-decoration: none;
   transition: background-color 1s;
-
-  align-items: center;
 }
 .button_product_page:hover {
   background-color: #e91e63;
@@ -22,24 +18,15 @@
 }
 
 .img_avatar {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-}
-
-.p_username {
-  display: flex;
-  align-items: center;
-}
-
-.card_header_description {
-  color: white;
-  font-family: "Montserrat", sans-serif;
+  width: 40px;
+  height: 40px;
 }
 
 .text_product_page {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.2rem;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
 }
 
 .fa-heart_custom {
@@ -47,13 +34,17 @@
   background: linear-gradient(to bottom right, #fa040c, #d65555);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
 }
 
-.button-heart {
-  top: 10px;
-  right: 10px;
-  position: absolute;
-  top: 290px;
-  right: 350px;
-  border-radius: 100%;
+.butons_download_avatar{
+  padding-top: 8%;
+}
+
+.imgs_small{
+  display: flex;
+}
+
+.avatar_padding{
+  padding-left: 0;
 }

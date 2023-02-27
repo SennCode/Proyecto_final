@@ -1,16 +1,40 @@
-.body-Category_list{
-    background-image: linear-gradient(to bottom,#ffffff, #e7e3e9, #e3e0e6, #ffffff);
-}
 
 .padindg_category_list{
-    padding: 7% 10%;
-    font-family: 'Montserrat-black', sans-serif;
+    padding: 5% 2%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    padding-top: 5%;
 }
 
-.h3_category_list{
-    font-family: 'Montserrat-Black', sans-serif;
-    line-height: 1.5;
-    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(248, 59, 81));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.arrow_category_list{
+    color: rgb(3, 3, 3);
+    
 }
+
+.arrow_category_list:hover{
+color: rgb(171, 28, 238);
+}
+
+.genders_titles {
+    background:
+    linear-gradient(
+      to right,
+      rgb(7, 7, 7),
+      rgb(63, 63, 63)
+    ),
+    linear-gradient(
+      to right,
+      rgb(255, 85, 0),
+      rgba(255, 0, 180, 1),
+      rgba(0, 100, 200, 1)
+  );
+  background-size: 100% 0.5px, 0 0.5px;
+  background-position: 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 400ms;
+  }
+  .genders_titles:hover {
+    background-size: 0 2px, 100% 2px;
+  }

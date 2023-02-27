@@ -1,14 +1,18 @@
 .container_uploadProduct {
-    padding: 7% 15%;
-    font-family: 'Montserrat', sans-serif;
+    padding: 7% 8%;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    padding-top: 5%;
+    font-size: 1.2rem;
   }
 
   .h3-upload{
-    font-family: 'Montserrat-Black', sans-serif;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
     line-height: 1.5;
-    background: -webkit-linear-gradient(rgb(74, 225, 245), rgb(174, 48, 237),rgb(248, 59, 81));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    font-size: 1.2rem;
 }
 .img_upload_sizes{
   height: 150px;

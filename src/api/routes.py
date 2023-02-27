@@ -2,9 +2,11 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Files3D, Patterns, Favorites
+from api.models import db, User, Files3D, Patterns, Prints, Favorites
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+from sqlalchemy import or_
 from flask_jwt_extended import get_jwt_identity, create_access_token, get_jwt, jwt_required, JWTManager
 
 import cloudinary
@@ -21,6 +23,10 @@ cloudinary.config(
 api = Blueprint('api', __name__)
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['ACCESS_CONTROL_ALLOW_ORIGIN'] = '*'
+
 # -------------------------------------------------------------------------------------------
 # acordarse de pegar en app.py "app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 # jwt = JWTManager(app)" y "from flask_jwt_extended import JWTManager"
@@ -34,26 +40,41 @@ bcrypt = Bcrypt(app)
 
 @api.route('/signup', methods=['POST'])
 def signup():
-    username = request.json.get("username", None)
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    is_active = request.json.get("is_active", None)
+    try:
+        username = request.json.get("username", None)
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
+        confirm_password = request.json.get("confirm_password", None)
+        is_active = request.json.get("is_active", True)
 
-# Hash the password
+        # if username is None or email is None or password is None or confirm_password is None:
+        #     return jsonify({"msg": "All fields must be filled", "data": None}), 400
 
-    password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # Hash the password
+        password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    user_already_exist = User.query.filter_by(
-        username=username).filter_by(email=email).first()
+        # # Check if passwords match
+        # if password != confirm_password:
+        #     return jsonify({"msg": "Passwords do not match!"})
 
-    if user_already_exist:
-        return jsonify({"msg": "user already exists!"}), 400
-    else:
-        new_user = User(username=username, email=email,
-                        password=password, is_active=is_active)
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({"user": new_user.serialize()}), 200
+        # if len(password) < 6:
+        #     return jsonify({"msg": "The password must be greater than 6 digits!", "data": None}), 400
+
+        user_already_exist = User.query.filter_by(
+            username=username).filter_by(email=email).first()
+
+        if user_already_exist:
+            return jsonify({"msg": "User already exists!"}), 400
+        else:
+            new_user = User(username=username, email=email,
+                            password=password, is_active=is_active)
+            db.session.add(new_user)
+            db.session.commit()
+            return jsonify({"user": new_user.serialize()}), 200
+    except Exception as e:
+        return jsonify({"msg error": str(e)}), 400
+
+
 
 # ------------
 # Users
@@ -68,7 +89,6 @@ def users():
 # ------------
 # LOGIN
 # ------------
-
 @api.route("/login", methods=["POST"])
 def login():
     email = request.json.get("email", None)
@@ -78,12 +98,12 @@ def login():
 
     if user and bcrypt.check_password_hash(user.password, password):
         access_token = create_access_token(identity=user.id)
-
+        
         return jsonify({"access_token": access_token}), 200
 
     else:
         return jsonify({"msg": "wrong email or password!"}), 400
-
+        
 # ---------------------
 # Buscar usuario por id
 # ---------------------
@@ -141,7 +161,7 @@ def delete_user(id):
 
     if not user:
         return jsonify({"msg": "User not found"}), 404
-    if user.id != current_user: 
+    if user.id != current_user:
         return jsonify({'msg': 'Unauthorized'}), 401
 
     db.session.delete(user)
@@ -155,16 +175,67 @@ def delete_user(id):
 
 @api.route("/store", methods=["GET"])
 def store():
-    files3d = Files3D.query.all()
+    files3d = [file.serialize() for file in Files3D.query.all()]
+    patterns = [pattern.serialize() for pattern in Patterns.query.all()]
+    prints = [one_print.serialize() for one_print in Prints.query.all()]
+    return jsonify({"files3d": files3d, "patterns": patterns, "prints": prints})
 
-    files3d = list(map(lambda file: file.serialize(), files3d))
+# ------------
+# SEARCH
+# ------------
+
+@api.route("/search/<search>", methods=["GET"])
+def search(search):
+    files3d = [file.serialize() for file in Files3D.query.filter(or_(Files3D.name.ilike(f'%{search}%'), 
+    Files3D.description.ilike(f'%{search}%'),Files3D.gender.ilike(f'%{search}%'))).all()]
+
     return jsonify({"files3d": files3d})
 
+
+# ----------------
+# LISTAR ARCHIVO3D
+# ----------------
+
+@api.route("/store/<int:id>", methods=['GET'])
+def get_file3d(id):
+    file3d = Files3D.query.get(id)
+
+    if not file3d:
+        return jsonify({'msg': 'Item not found!'})
+
+    return jsonify(file3d.serialize())
+
+# ----------------
+# LISTAR PATTERN
+# ----------------
+
+@api.route("/store/<int:id>", methods=['GET'])
+def get_pattern(id):
+    patterns = Patterns.query.get(id)
+
+    if not pattern:
+        return jsonify({'msg': 'Item not found!'})
+
+    return jsonify(pattern.serialize())
+
+# ----------------
+# LISTAR PRINT
+# ----------------
+
+@api.route("/store/<int:id>", methods=['GET'])
+def get_one_print(id):
+    one_print = Prints.query.get(id)
+
+    if not one_print:
+        return jsonify({'msg': 'Item not found!'})
+
+    return jsonify(one_print.serialize())
+
 # ---------------
-# CREAR ARCHIVO3D
+# CREAR ARCHIVO
 # ---------------
 
-@api.route("/store", methods=['POST'])
+@api.route("/create_file", methods=['POST'])
 @jwt_required
 def create_file():
     name = request.json.get('name', None)
@@ -176,7 +247,7 @@ def create_file():
     size = request.json.get('size', None)
     user_id = get_jwt_identity()
 
-    new_file = Files3D(name=name, description=description, file_type= file_type, 
+    new_file = Files3D(name=name, description=description, file_type= file_type,
     gender=gender, url=url, type_clothes=type_clothes, size=size, user_id=user_id)
     db.session.add(new_file)
     db.session.commit()

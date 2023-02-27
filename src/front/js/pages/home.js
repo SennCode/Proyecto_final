@@ -6,7 +6,7 @@ import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_blac
 import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
 import hoodie_clonX from "/workspace/react-flask-hello/src/front/img/hoodie_clonX.png";
 import socks from "/workspace/react-flask-hello/src/front/img/socks.png";
-import Parallax from "../component/parallax.jsx";
+
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -40,20 +40,20 @@ export const Home = () => {
           <div className="row pt-5">
             <div className="featured-box col-lg-4">
               <i className="icon fa-solid fa-circle-check fa-4x icon-colorful mb-2"></i>
-              <h3 className="h3-features">Easy to use.</h3>
-              <p className="p-features">Download and use.</p>
+              <h3 className="h3-features">Easy to use</h3>
+              <p className="p-features">Download and use</p>
             </div>
 
             <div className="featured-box col-lg-4">
               <i className="icon fa-solid fa-bullseye fa-4x icon-colorful mb-2"></i>
               <h3 className="h3-features">Elite Clientele</h3>
-              <p className="p-features">Only profesionals.</p>
+              <p className="p-features">Only profesionals</p>
             </div>
 
             <div className="featured-box col-lg-4">
               <i className="icon fa-solid fa-heart fa-4x icon-colorful mb-2"></i>
-              <h3 className="h3-features">Guaranteed to work.</h3>
-              <p className="p-features">HD Files.</p>
+              <h3 className="h3-features">Guaranteed to work</h3>
+              <p className="p-features">HD Files</p>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export const Home = () => {
       {/* cards */}
       <section id="pricing">
         <h2 className="h2card">A Plan for Everyone</h2>
-        <p className="p-cards">Simple and affordable price plans for your.</p>
+        <p className="p-cards">Simple and affordable price plans for your</p>
 
         {/* CARD 1 */}
         <div className="row">
@@ -196,9 +196,9 @@ export const Home = () => {
             <div className="featured-box">
               <h3 className="h3-cta justify-content-center">
                 Find your perfect clothing for your personal project or contact
-                the artist directly to create a personalized collection.{" "}
+                the artist directly to create a personalized collection{" "}
               </h3>
-              <p className="p-cta">Download and use.</p>
+              <p className="p-cta">Download and use</p>
             </div>
           </div>
         </div>

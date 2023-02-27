@@ -16,6 +16,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(False), unique=False, nullable=False)
     files3d = db.relationship('Files3D', backref='user')
     patterns = db.relationship('Patterns', backref='user')
+    prints = db.relationship('Prints', backref='user')
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -26,7 +27,6 @@ class User(db.Model):
             "username": self.username,
             "img": self.img,
             "email": self.email,
-            "password": self.password,
             "is_active": self.is_active
         }
 
@@ -82,6 +82,30 @@ class Patterns(db.Model):
             "size": self.size
         }
 
+        # Tabla Prints
+
+class Prints(db.Model):
+    __tablename__ = "prints"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(300), unique=True, nullable=False)
+    file_type = db.Column(db.String(20), unique=True, nullable=False)
+    gender = db.Column(db.String(10), unique=False, nullable=True)
+    url = db.Column(db.String(300), unique=False, nullable=True)
+    type_print = db.Column(db.String(30), unique=False, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "file_type": self.file_type,
+            "gender": self.gender,
+            "url": self.url,
+            "type_clothes": self.type_clothes,
+        }
+
 # Tabla Favoritos
 
 class Favorites(db.Model):
@@ -92,6 +116,7 @@ class Favorites(db.Model):
         'files3d.id'), nullable=False)
     patterns_id = db.Column(db.Integer, db.ForeignKey(
         'patterns.id'), nullable=False)
+    prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False)
 
     def serialize(self):
         return {
