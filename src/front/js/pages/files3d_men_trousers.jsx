@@ -40,7 +40,7 @@ function Files3D_Men_Trousers() {
                           />
                           <div className="card-body">
                             <p className="card-text text-dark">
-                              {file.name}/{file.file_type}
+                              {file.name}/{file.file_type}/{file.gender}
                             </p>
                           </div>
                         </div>

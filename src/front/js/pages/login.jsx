@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Context } from "../store/appContext.js";
 
+
 function Login() {
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ function Login() {
                     </div>
 
                     <p>Please enter your login details</p>
-
+                    
                     {/* email */}
 
                     <div className="form-floating mb-3">

@@ -2,30 +2,30 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Files3D, Patterns, Prints, Favorites
+from api.models import db, User, Files3D, Patterns, Prints, FavoritesFiles3D
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from sqlalchemy import or_
-from flask_jwt_extended import get_jwt_identity, create_access_token, get_jwt, jwt_required, JWTManager
+from sqlalchemy import and_
+from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required, JWTManager
 
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
 cloudinary.config(
-  cloud_name = "dwssfgyty",
-  api_key = "873114413959781",
-  api_secret = "dlcrM4HlfBpHSaQccMmx05wrvxc",
-  secure = True
+  cloud_name="dwssfgyty",
+  api_key="873114413959781",
+  api_secret="dlcrM4HlfBpHSaQccMmx05wrvxc",
+  secure=True
 )
 
 api = Blueprint('api', __name__)
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['ACCESS_CONTROL_ALLOW_ORIGIN'] = '*'
+app.config['ACCESS-CONTROL-ALLOW-ORIGIN'] = '*'
 
 # -------------------------------------------------------------------------------------------
 # acordarse de pegar en app.py "app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
@@ -47,18 +47,7 @@ def signup():
         confirm_password = request.json.get("confirm_password", None)
         is_active = request.json.get("is_active", True)
 
-        # if username is None or email is None or password is None or confirm_password is None:
-        #     return jsonify({"msg": "All fields must be filled", "data": None}), 400
-
-        # Hash the password
         password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-        # # Check if passwords match
-        # if password != confirm_password:
-        #     return jsonify({"msg": "Passwords do not match!"})
-
-        # if len(password) < 6:
-        #     return jsonify({"msg": "The password must be greater than 6 digits!", "data": None}), 400
 
         user_already_exist = User.query.filter_by(
             username=username).filter_by(email=email).first()
@@ -73,8 +62,6 @@ def signup():
             return jsonify({"user": new_user.serialize()}), 200
     except Exception as e:
         return jsonify({"msg error": str(e)}), 400
-
-
 
 # ------------
 # Users
@@ -103,6 +90,19 @@ def login():
 
     else:
         return jsonify({"msg": "wrong email or password!"}), 400
+
+# ------------
+# PRIVATE
+# ------------
+@api.route("/private", methods=["GET"])
+@jwt_required()
+def private():
+    current_user_id = get_jwt_identity()
+
+    user = User.query.get(current_user_id)
+
+    return jsonify(user.serialize()), 200
+    
         
 # ---------------------
 # Buscar usuario por id
@@ -187,9 +187,12 @@ def store():
 @api.route("/search/<search>", methods=["GET"])
 def search(search):
     files3d = [file.serialize() for file in Files3D.query.filter(or_(Files3D.name.ilike(f'%{search}%'), 
-    Files3D.description.ilike(f'%{search}%'),Files3D.gender.ilike(f'%{search}%'))).all()]
+    Files3D.description.ilike(f'%{search}%'),
+    Files3D.gender.ilike(f'%{search}%'),
+    Files3D.size.ilike(f'%{search}%'))).all()]
 
-    return jsonify({"files3d": files3d})
+    return jsonify({"files3d": files3d}), 200, {'Content-Type': 'application/json'}
+
 
 
 # ----------------
@@ -236,23 +239,26 @@ def get_one_print(id):
 # ---------------
 
 @api.route("/create_file", methods=['POST'])
-@jwt_required
+
 def create_file():
     name = request.json.get('name', None)
+    category = request.json.get('category', None)
     description = request.json.get('description', None)
     file_type = request.json.get('file_type', None)
     gender = request.json.get('gender', None)
     url = request.json.get('url', None)
     type_clothes = request.json.get('type_clothes', None)
     size = request.json.get('size', None)
-    user_id = get_jwt_identity()
+    print(request.json)
+  
 
-    new_file = Files3D(name=name, description=description, file_type= file_type,
-    gender=gender, url=url, type_clothes=type_clothes, size=size, user_id=user_id)
+    new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
+    gender=gender, url=url, type_clothes=type_clothes, size=size)
     db.session.add(new_file)
     db.session.commit()
 
     return jsonify({"msg": 'File created successfully!', 'file': new_file.serialize()}), 201
+
 # ----------
 # cloudinary
 # ----------
@@ -264,3 +270,37 @@ def upload_image():
         url_image = data["secure_url"]
         return jsonify(data), 201
     return jsonify({"msg": "Error!"}), 401
+
+# ----------
+# FAVORITES
+# ----------
+
+# Create a new favorite for a user
+@api.route('/users/favorites_files3d', methods=['GET', 'POST'])
+@jwt_required()
+def create_favorite():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    new_favorite = FavoritesFiles3D(user_id=current_user_id, files3d_id=data.get('files3d_id')) 
+    
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify(new_favorite.serialize()), 201
+
+# Get all favorites for a user
+@api.route('/users/<int:user_id>/favorites', methods=['GET'])
+def get_favorites(user_id):
+    favorites = Favorites.query.filter_by(user_id=user_id).all()
+    return jsonify([f.serialize() for f in favorites]), 200
+
+# Delete a favorite for a user
+@api.route('/users/<int:user_id>/favorites/<int:favorite_id>', methods=['DELETE'])
+def delete_favorite(user_id, favorite_id):
+    favorite = Favorites.query.filter_by(id=favorite_id, user_id=user_id).first()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({'message': 'Favorite deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Favorite not found'}), 404
+

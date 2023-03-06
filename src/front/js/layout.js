@@ -46,10 +46,12 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import Create_user from "./pages/register_user.jsx";
+import FavoriteList from "./pages/favorite_list.jsx";
 import Login from "./pages/login.jsx";
 import ProductPage from "./pages/product_page.jsx";
 import UploadProduct from "./pages/upload_product.jsx";
 import SearchResults from "./pages/search_results.jsx";
+import Profile from "./pages/profile.jsx";
 
 //create your first component
 const Layout = () => {
@@ -64,7 +66,9 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route element={<SearchResults />} path="search_results" />
+            <Route element={<FavoriteList />} path="/favorites" />
+            <Route element={<Profile />} path="/profile" />
+            <Route element={<SearchResults />} path="/search_results/:query" />
             <Route element={<Prints_Men />} path="/prints_category/men" />
             <Route element={<Prints_Women />} path="/prints_category/women" />
             <Route element={<Prints_Children />} path="/prints_category/children" />

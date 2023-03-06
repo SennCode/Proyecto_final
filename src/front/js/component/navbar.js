@@ -1,31 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "/workspace/react-flask-hello/src/front/styles/navbar.css";
 import config from "../store/config";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const [ isOpen, setIsOpen ] = useState(false);
-  const [ files, setFiles ] = useState([]);
-  const [ search, setSearch ] = useState("");
-  const results = async e =>{
-    e.preventDefault()
-    await fetch(`${config.HOSTNAME}/api/store/${search}`)
-    .then(response => response.json())
-    .then(data => {
-      setFiles(data)
-      console.log(data)
-      
-    })
-   
+  const [isOpen, setIsOpen] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [search, setSearch] = useState("");
+  const { store, actions } = useContext(Context);
+
+  const navigate = useNavigate();
+
+  const results = async (e) => {
+    e.preventDefault();
+    await fetch(`${config.HOSTNAME}/api/search/${search}`)
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        setFiles(data);
+        console.log(data);
+        actions.set_search_results(data.files3d);
+        navigate(`/search_results/${search}`);
+      });
   };
 
-  const changeState = e =>{
-    setSearch(e.target.value)
-    console.log(e.target.value)
-  }
-  let resultado = []
-  if (!search){
-    resultado = files
+  const changeState = (e) => {
+    setSearch(e.target.value);
+    console.log(e.target.value);
+  };
+  let resultado = [];
+  if (!search) {
+    resultado = files;
   }
 
   const selectNavbar = () => {
@@ -81,6 +90,7 @@ export const Navbar = () => {
                   Patterns
                 </Link>
               </li>
+
               <li className="nav-item ms-3">
                 <Link
                   to="/prints_category"
@@ -92,7 +102,11 @@ export const Navbar = () => {
               </li>
             </ul>
             {/* --- Search --- */}
-            <form className="d-flex container-fluid mt-2" role="search" onSubmit={results}>
+            <form
+              className="d-flex container-fluid mt-2"
+              role="search"
+              onSubmit={results}
+            >
               <input
                 className="form-control me-2"
                 type="search"
@@ -119,57 +133,65 @@ export const Navbar = () => {
                   <i className="far fa-user-circle fa-2x me-5 mt-3 mb-3 hover-navbar" />
                 </a>
                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end background_user_dropdown">
-                  <li>
-                    <Link
-                      to="/login"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      Tú Cuenta
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      Descargas
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      Lista Favoritos
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      Mis Artículos
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      Cerrar Sesión
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/register_user"
-                      className="dropdown-item dropdown-item-backgorund"
-                    >
-                      New around here? Sign up
-                    </Link>
-                  </li>
+                  {localStorage.getItem("access_token") ? (
+                    <>
+                      <li>
+                        <button
+                          className="dropdown-item dropdown-item-backgorund"
+                          onClick={() => navigate("/profile")}
+                        >
+                          My profile
+                          <i className="fas ms-2 fa-user-cog"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                         
+                          className="dropdown-item dropdown-item-backgorund"
+                          onClick={() => navigate("/favorites")}
+                        >
+                          Favorites
+                          <i className="fas ms-2 fa-star"></i>
+                        </button>
+                      </li>
+
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item dropdown-item-backgorund"
+                          onClick={() => {
+                            localStorage.removeItem("access_token");
+                            navigate("/");
+                          }}
+                        >
+                          Leave
+                          <i className="fas ms-2 fa-sign-out-alt"></i>
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <Link
+                          to="/login"
+                          className="dropdown-item dropdown-item-backgorund"
+                        >
+                          Login
+                          <i className="fas ms-2 fa-sign-in-alt"></i>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/register_user"
+                          className="dropdown-item dropdown-item-backgorund"
+                        >
+                          Register
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </li>
             </div>

@@ -9,9 +9,12 @@
 // - El código está utilizando async y await para esperar a que se complete la petición HTTP y obtener
 // los datos antes de continuar con el resto del código.
 // -----
+
 import config from "/workspace/react-flask-hello/src/front/js/store/config.js";
 
+
 const getState = ({ getStore, getActions, setStore }) => {
+  
   return {
     store: {
       users: [],
@@ -19,10 +22,17 @@ const getState = ({ getStore, getActions, setStore }) => {
       patterns: [],
       prints: [],
       access_token: null,
-      user_id: null
+      user_id: null,
+      search_results: [],
+      favorites: [],
+      navigate: null
     },
 
     actions: {
+
+      navigateNull: () =>{
+        setStore({"navigate": null})
+      },
       // Obtenemos los datos de usuario desde la API y lo convertimos en un json
       //   y lo almacenamos en el store usando setStore
 
@@ -45,7 +55,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       createFile3D: async (newFile3D) => {
         try {
-          const response = await fetch(`${config.HOSTNAME}/api/store`, {
+          const response = await fetch(`${config.HOSTNAME}/api/create_file`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -73,8 +83,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       // ----------------
 
       registerUser: async (userData) => {
-
-        if (!userData.username || !userData.email || !userData.password || !userData.confirmPassword) {
+        if (
+          !userData.username ||
+          !userData.email ||
+          !userData.password ||
+          !userData.confirmPassword
+        ) {
           return alert("All fields are required.");
         }
         if (userData.password !== userData.confirmPassword) {
@@ -88,7 +102,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         try {
           // Validación de campos
-        
+
           const response = await fetch(`${config.HOSTNAME}/api/signup`, {
             method: "POST",
             headers: {
@@ -96,11 +110,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             body: JSON.stringify(userData),
           });
-      
+
           if (!response.ok) {
             return { "HTTP error ": response.status };
           }
-      
+
           // Resto del código
           const data = await response.json();
           setStore((store) => {
@@ -109,9 +123,11 @@ const getState = ({ getStore, getActions, setStore }) => {
               users: [...store.users, data],
             };
           });
-      
+
           // Mensaje de éxito
-          const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
+          const alertPlaceholder = document.getElementById(
+            "liveAlertPlaceholder"
+          );
           const alert = (message, type) => {
             const wrapper = document.createElement("div");
             wrapper.innerHTML = `
@@ -127,28 +143,25 @@ const getState = ({ getStore, getActions, setStore }) => {
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick="window.location.href='/login'">Accept</button>
+                      <button type="button" class="btn btn-primary lert-success text-light" data-bs-dismiss="modal" onClick="window.location.href='/login'">Go to login page</button>
                     </div>
                   </div>
                 </div>
               </div>
             `;
             alertPlaceholder.appendChild(wrapper);
-      
+
             const modalElement = document.getElementById("exampleModal");
             const modal = new bootstrap.Modal(modalElement);
             modal.show();
-      
+
             modalElement.addEventListener("hidden.bs.modal", () => {
               wrapper.remove();
             });
           };
-      
-          alert(
-            "User created successfully! Please, you have to accept this alert to go to the login page.",
-            "success"
-          );
-      
+
+          alert("User created successfully!", "success");
+
           await new Promise((resolve) => {
             const closeButton = document.querySelector(
               "#liveAlertPlaceholder .btn-close"
@@ -157,7 +170,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               resolve();
             });
           });
-      
+
           if (!response.ok) {
             return { "HTTP error ": response.status };
           }
@@ -166,7 +179,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           throw new Error("Error en el registro. Por favor intente de nuevo.");
         }
       },
-      
+
+      // ----------------
+      // SEARCH
+      // ----------------
+      set_search_results: (search) => {
+        setStore({ search_results: search });
+      },
 
       // ----------------
       // GET LOGIN
@@ -174,13 +193,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       loginUser: async (email, password) => {
         try {
           const response = await fetch(`${config.HOSTNAME}/api/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, password: password })
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, password: password }),
           });
           const data = await response.json();
           if (response.ok) {
-            localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem("access_token", data.access_token);
             setStore({ access_token: data.access_token });
             return data;
           } else {
@@ -190,7 +209,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           throw error;
         }
       },
-    
+
       // Obtenemos los datos de files3d desde la API y lo convertimos en un json
       //   y lo almacenamos en el store usando setStore
 
@@ -249,6 +268,69 @@ const getState = ({ getStore, getActions, setStore }) => {
             return setStore({ prints: data.prints });
           });
       },
+      // ----------------
+      // ADD FAVORITES
+      // ----------------
+        addFavorites: async () => {
+        const store = getStore();
+        // let auxFavorites = [...store.favorites];
+        // let itemFavorites = {
+        //   id: auxFavorites.length,
+        //   name: name,
+        // };
+        // auxFavorites.push(itemFavorites);
+        // setStore({ favorites: auxFavorites });
+
+        // const user_id = store.user_id; // Obtener el user_id del store
+        const files3d_id = store.files3d_id; // Obtener el files3d_id del store
+
+        const data = {
+          
+          files3d_id: files3d_id,
+        };
+
+        const response = await fetch(`${config.HOSTNAME}/api/users/favorites_files3d`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const new_favorite = await response.json();
+          setStore((store) => {
+            return {
+              ...store,
+              favorites: [...store.favorites, data],
+        }});
+          console.log(new_favorite); // Imprimir el nuevo favorito creado
+        } else {
+          console.error("Error al crear el favorito");
+          }
+      },
+
+      getProfile: () => {
+        const token = localStorage.getItem("access_token")
+        fetch(`${config.HOSTNAME}/api/private`,{
+          method: "GET",
+          headers: {
+            "Contentet-Type": "application/json",
+            Authorization: "Bearer " + token
+          }
+        })
+        .then((resp)=> {
+          if(resp.status == 200){
+            return resp.json()
+          }else {
+            setStore({"navigate": "/login" })
+          } 
+          
+        })
+        .then((data)=> {
+          setStore({user:data})
+        })
+      }
     },
   };
 };

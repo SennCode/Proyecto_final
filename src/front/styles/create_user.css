@@ -60,6 +60,6 @@
 }
 
 .alert-success {
-  background-color: #3f51b5;
+  background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
   color: #ffffff;
 }

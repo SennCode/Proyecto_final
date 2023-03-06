@@ -1,41 +1,143 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import "/workspace/react-flask-hello/src/front/styles/upload_product.css";
 import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_black.png";
-import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
+import { Context } from "../store/appContext.js";
+import config from "../store/config.js";
 
-const HOSTNAME =
-  "https://3001-4geeksacade-reactflaskh-xex9ne5j69n.ws-eu86.gitpod.io/";
-
-// UploadProduct se encargará de procesar la carga de un producto
 function UploadProduct() {
-  // función llamada sendImage que se encargará de enviar la imagen al servidor
+  const { store, actions } = useContext(Context);
+  const [newFile3D, setNewFile3D] = useState({
+    category: "",
+    name: "",
+    description: "",
+    file_type: "",
+    gender: "",
+    url: "",
+    type_clothes: "",
+    size: "",
+  });
+
+  const [image, setImage] = useState(null);
+
   const sendImage = () => {
-    console.log(">>>Send Image>>>");
-    // obtiene el archivo que se ha cargado en el elemento con el id "file-input" y
-    // lo almacena en la variable file
-    const file = document.getElementById("file-input").files[0];
-    console.log(file);
-    // crea un objeto FormData que se usará para enviar los datos al servidor
+    console.log(">>> send image");
+    const archivo = document.getElementById("formFileMultiple").files[0]
+    console.log({ archivo });
+
     const body = new FormData();
-    // añade el archivo que se ha cargado en el objeto FormData con el nombre "archivo"
-    body.append("archivo", file);
-    // inicia una petición fetch a la URL
-    fetch(`${HOSTNAME}/api/upload`, {
-      // se está haciendo una petición POST
+    body.append("archivo", archivo);
+   
+    fetch(`${config.HOSTNAME}/api/upload`, {
       method: "POST",
-      // añade el objeto FormData que se ha creado a la petición fetch
       body: body,
     })
-      // indica que cuando la petición fetch se complete satisfactoriamente,
-      // se ejecutará el siguiente código
-      .then((res) => {
-        return res.json();
+      .then((response) => {
+        return response.json();
       })
-      // indica que cuando la respuesta JSON esté lista, se ejecutará el siguiente código
       .then((data) => {
         console.log({ data });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
+
+  const handleInputChange = (e) => {
+    const file = e.target.files[0];
+    setNewFile3D({
+      ...newFile3D,
+      
+      url: file
+    });
+  };
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendImage();
+    const fileInput = document.getElementById("formFileMultiple");
+    const file = fileInput.files[0];
+    const newFile3DWithUrl = {
+      ...newFile3D,
+      url: `${config.HOSTNAME}/uploads/${file.name}`,
+    };
+    actions.createFile3D(newFile3DWithUrl);
+  };
+
+  const getTypeClothesOptions = () => {
+    if (
+      newFile3D.gender === "Men" &&
+      (newFile3D.category === "3Dfiles" || newFile3D.category === "Patterns")
+    ) {
+      return (
+        <>
+          <option value="Hoodies">Hoodies</option>
+          <option value="T-Shirts">T-Shirt</option>
+          <option value="Trousers">Trousers</option>
+        </>
+      );
+    } else if (
+      newFile3D.gender === "Women" &&
+      (newFile3D.category === "3Dfiles" || newFile3D.category === "Patterns")
+    ) {
+      return (
+        <>
+          <option value="Dresses">Dresses</option>
+          <option value="Blouses">Blouses</option>
+          <option value="Trousers">Trousers</option>
+        </>
+      );
+    } else if (
+      newFile3D.gender === "Children" &&
+      (newFile3D.category === "3Dfiles" || newFile3D.category === "Patterns")
+    ) {
+      return (
+        <>
+          <option value="Hoodies">Hoodies</option>
+          <option value="T-Shirts">T-Shirts</option>
+          <option value="Trousers">Trousers</option>
+        </>
+      );
+    } else if (newFile3D.gender === "Men" && newFile3D.category === "Prints") {
+      return (
+        <>
+          <option value="Abstract">Abstract</option>
+          <option value="Stripes">Stripes</option>
+          <option value="Geometric">Geometric</option>
+        </>
+      );
+    } else if (
+      newFile3D.gender === "Women" &&
+      newFile3D.category === "Prints"
+    ) {
+      return (
+        <>
+          <option value="Floral">Floral</option>
+          <option value="Geometric">Geometric</option>
+          <option value="Animal">Animal</option>
+        </>
+      );
+    } else if (
+      newFile3D.gender === "Children" &&
+      newFile3D.category === "Prints"
+    ) {
+      return (
+        <>
+          <option value="Animals">Animals</option>
+          <option value="Sports">Sports</option>
+          <option value="Geometric">Geometric</option>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <option value="">Select a category and gender first</option>
+        </>
+      );
+    }
+  };
+
+  const typeClothesOptions = getTypeClothesOptions();
 
   return (
     <div className="container-fluid container_uploadProduct">
@@ -46,68 +148,100 @@ function UploadProduct() {
           <select
             className="form-select form-select-sm borders_upload"
             aria-label=".form-select-sm example "
+            name="category"
+            value={newFile3D.category}
+            onChange={handleInputChange}
           >
-            <option selected>Category</option>
-            <option value="1">3Dfiles</option>
-            <option value="2">Patterns</option>
-            <option value="3">Prints</option>
+            <option value="Category">Category</option>
+            <option value="3Dfiles">3Dfiles</option>
+            <option value="Patterns">Patterns</option>
+            <option value="Prints">Prints</option>
           </select>
           {/* -- Title -- */}
           <div className="mb-3">
-            <label for="exampleFormControlInput1" className="form-label pt-3">
+            <label
+              htmlFor="exampleFormControlInput1"
+              className="form-label pt-3"
+            >
               Title
             </label>
             <input
-              type="email"
+              type="text"
               className="form-control borders_upload"
               id="exampleFormControlInput1"
               placeholder='e.g.: "Black Trousers"'
+              name="name"
+              value={newFile3D.name}
+              onChange={handleInputChange}
             />
           </div>
           {/* -- Description -- */}
           <div className="mb-3">
-            <label for="exampleFormControlTextarea1" className="form-label">
+            <label htmlFor="exampleFormControlTextarea1" className="form-label">
               Description
             </label>
             <textarea
               className="form-control borders_upload"
               id="exampleFormControlTextarea1"
               rows="3"
+              name="description"
+              value={newFile3D.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
           {/* -- Size -- */}
           <select
             className="form-select form-select-sm borders_upload mb-3"
             aria-label=".form-select-sm"
+            name="size"
+            value={newFile3D.size}
+            onChange={handleInputChange}
           >
             <option selected>Size</option>
-            <option value="1">XS</option>
-            <option value="2">S</option>
-            <option value="3">M</option>
-            <option value="3">L</option>
-            <option value="3">XL</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
           </select>
           {/* -- File Type -- */}
           <select
             className="form-select form-select-sm borders_upload mb-3"
             aria-label=".form-select-sm example"
+            name="file_type"
+            value={newFile3D.file_type}
+            onChange={handleInputChange}
           >
             <option selected>File type</option>
-            <option value="1">.obj</option>
-            <option value="2">.zprj</option>
-            <option value="3">.dxf</option>
-            <option value="4">.tiff</option>
+            <option value=".obj">.obj</option>
+            <option value=".zprj">.zprj</option>
+            <option value="3.dxf">.dxf</option>
+            <option value=".tiff">.tiff</option>
           </select>
 
           {/* -- Gender -- */}
           <select
-            className="form-select form-select-sm borders_upload"
+            className="form-select form-select-sm borders_upload mb-3"
             aria-label=".form-select-sm example"
+            name="gender"
+            value={newFile3D.gender}
+            onChange={handleInputChange}
           >
             <option selected>Gender</option>
-            <option value="1">Men</option>
-            <option value="2">Women</option>
-            <option value="3">Children</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Children">Children</option>
+          </select>
+          {/* -- Type Clothes -- */}
+          <select
+            className="form-select form-select-sm borders_upload"
+            aria-label=".form-select-sm example"
+            name="type_clothes"
+            value={newFile3D.type_clothes}
+            onChange={handleInputChange}
+          >
+            <option selected>Type Clothes</option>
+            {typeClothesOptions}
           </select>
         </div>
       </div>
@@ -115,24 +249,30 @@ function UploadProduct() {
       {/* -- Input imgs -- */}
 
       <div className="mb-3">
-        <label for="formFileMultiple" className="form-label pt-3">
-          Photos
-        </label>
-        <input
-          className="form-control"
-          type="file"
-          id="formFileMultiple"
-          multiple
-        />
+      <form onSubmit={handleSubmit}>
+    <div className="mb-3">
+      <label htmlFor="formFileMultiple" className="form-label pt-3">
+        Photos
+      </label>
+      <input
+        className="form-control"
+        type="file"
+        id="formFileMultiple"
+        multiple
+        name="url"
+        onChange={handleInputChange}
+      />
+    </div>
+        </form>
       </div>
       {/* -- Input zip -- */}
       <div className="mb-3">
-        <label for="formFileMultiple" className="form-label pt-3">
+        <label htmlFor="formFileMultiple" className="form-label pt-3">
           File .zip/.rar
         </label>
         <input className="form-control" type="file" id="file-input" multiple />
       </div>
-      {/* -- Imgs -- */}
+      {/* -- Imgs -- queda pendiente de hacer */}
       <div className="row">
         <div className="col-lg-12 pt-2 ms-3">
           <img
@@ -161,7 +301,7 @@ function UploadProduct() {
         <div className="row">
           <div className="col-lg-2">
             <button
-              onClick={sendImage}
+              onClick={handleSubmit}
               type="button"
               className="btn button_product_page btn-block mb-5 text_product_page btn-sm mt-4
                 "

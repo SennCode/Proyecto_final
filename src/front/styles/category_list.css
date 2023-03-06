@@ -38,3 +38,12 @@ color: rgb(171, 28, 238);
   .genders_titles:hover {
     background-size: 0 2px, 100% 2px;
   }
+
+  .padindg_search_list{
+    padding: 60% 15%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    padding-top: 5%;
+}

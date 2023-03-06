@@ -19,7 +19,7 @@ class User(db.Model):
     prints = db.relationship('Prints', backref='user')
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'{self.username}'
 
     def serialize(self):
         return {
@@ -36,18 +36,23 @@ class Files3D(db.Model):
     __tablename__ = "files3d"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
+    category = db.Column(db.String(120), unique=False, nullable=True)
     description = db.Column(db.String(300), unique=False, nullable=False)
     file_type = db.Column(db.String(20), unique=False, nullable=False)
-    gender = db.Column(db.String(10), unique=False, nullable=False)
-    url = db.Column(db.String(300), unique=False, nullable=False)
+    gender = db.Column(db.String(10), unique=False, nullable=True)
+    url = db.Column(db.String(300), unique=False, nullable=True)
     type_clothes = db.Column(db.String(30), unique=False, nullable=False)
     size = db.Column(db.String(20), unique=False, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+    def __repr__(self):
+        return self.name
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
+            "category": self.category,
             "description": self.description,
             "file_type": self.file_type,
             "gender": self.gender,
@@ -108,17 +113,39 @@ class Prints(db.Model):
 
 # Tabla Favoritos
 
-class Favorites(db.Model):
-    __tablename__ = "favorites"
+class FavoritesFiles3D(db.Model):
+    __tablename__ = "favorites_files3d"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship("User", backref="favorites_files3d")
     files3d_id = db.Column(db.Integer, db.ForeignKey(
         'files3d.id'), nullable=False)
-    patterns_id = db.Column(db.Integer, db.ForeignKey(
-        'patterns.id'), nullable=False)
-    prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False)
+    files3d = db.relationship("Files3D", backref="favorites_files3d")
+
+    def __repr__(self):
+        return self.user_id
+
 
     def serialize(self):
         return {
-            "id": self.id
+            "id": self.id,
+            "user_id": self.user_id,
+            "files3d_id": self.files3d_id,
+            "user": self.user.serialize(),
+            "files3d": self.files3d.serialize()
         }
+
+# class Favorites(db.Model):
+#     __tablename__ = "favorites"
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     files3d_id = db.Column(db.Integer, db.ForeignKey(
+#         'files3d.id'), nullable=False)
+#     patterns_id = db.Column(db.Integer, db.ForeignKey(
+#         'patterns.id'), nullable=False)
+#     prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False)
+
+#     def serialize(self):
+#         return {
+#             "id": self.id
+#         }

@@ -1,5 +1,6 @@
 .nav-item {
   font-size: 20px;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .navbar-color {
@@ -48,4 +49,8 @@ a {
 
 .dropdown-item-backgorund:hover {
   background: linear-gradient(to bottom, rgb(103, 177, 243), rgb(149, 0, 255));
+}
+
+.hidden {
+  display: none;
 }
