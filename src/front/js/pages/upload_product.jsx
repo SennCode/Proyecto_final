@@ -12,21 +12,16 @@ function UploadProduct() {
     description: "",
     file_type: "",
     gender: "",
-    url: "",
+    url: [],
     type_clothes: "",
     size: "",
   });
 
-  const [image, setImage] = useState(null);
-
-  const sendImage = () => {
+  const sendImage = (file) => {
     console.log(">>> send image");
-    const archivo = document.getElementById("formFileMultiple").files[0]
-    console.log({ archivo });
-
     const body = new FormData();
-    body.append("archivo", archivo);
-   
+    body.append("archivo", file);
+
     fetch(`${config.HOSTNAME}/api/upload`, {
       method: "POST",
       body: body,
@@ -42,26 +37,37 @@ function UploadProduct() {
       });
   };
 
-  const handleInputChange = (e) => {
-    const file = e.target.files[0];
+
+  const handleInputFiles = (e) => {
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
     setNewFile3D({
       ...newFile3D,
-      
-      url: file
+      url: urls,
     });
   };
-  
+
+  const handleInputChange = (e) => {
+    const inputName = e.target.name;
+    const inputValue = e.target.value;
+    setNewFile3D((prevState) => ({ ...prevState, [inputName]: inputValue }));
+  };
+  console.log(newFile3D);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendImage();
     const fileInput = document.getElementById("formFileMultiple");
-    const file = fileInput.files[0];
+    const files = Array.from(fileInput.files);
+    files.forEach((file) => sendImage(file));
+    const urls = files.map(
+      (file) => `${config.HOSTNAME}/api/upload/${file.name}`
+    );
     const newFile3DWithUrl = {
       ...newFile3D,
-      url: `${config.HOSTNAME}/uploads/${file.name}`,
+      url: urls,
     };
     actions.createFile3D(newFile3DWithUrl);
+    console.log(newFile3DWithUrl)
   };
 
   const getTypeClothesOptions = () => {
@@ -197,7 +203,7 @@ function UploadProduct() {
             value={newFile3D.size}
             onChange={handleInputChange}
           >
-            <option selected>Size</option>
+            <option defaultValue>Size</option>
             <option value="XS">XS</option>
             <option value="S">S</option>
             <option value="M">M</option>
@@ -212,7 +218,7 @@ function UploadProduct() {
             value={newFile3D.file_type}
             onChange={handleInputChange}
           >
-            <option selected>File type</option>
+            <option defaultValue>File type</option>
             <option value=".obj">.obj</option>
             <option value=".zprj">.zprj</option>
             <option value="3.dxf">.dxf</option>
@@ -227,7 +233,7 @@ function UploadProduct() {
             value={newFile3D.gender}
             onChange={handleInputChange}
           >
-            <option selected>Gender</option>
+            <option defaultValue>Gender</option>
             <option value="Men">Men</option>
             <option value="Women">Women</option>
             <option value="Children">Children</option>
@@ -240,7 +246,7 @@ function UploadProduct() {
             value={newFile3D.type_clothes}
             onChange={handleInputChange}
           >
-            <option selected>Type Clothes</option>
+            <option defaultValue>Type Clothes</option>
             {typeClothesOptions}
           </select>
         </div>
@@ -249,20 +255,20 @@ function UploadProduct() {
       {/* -- Input imgs -- */}
 
       <div className="mb-3">
-      <form onSubmit={handleSubmit}>
-    <div className="mb-3">
-      <label htmlFor="formFileMultiple" className="form-label pt-3">
-        Photos
-      </label>
-      <input
-        className="form-control"
-        type="file"
-        id="formFileMultiple"
-        multiple
-        name="url"
-        onChange={handleInputChange}
-      />
-    </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="formFileMultiple" className="form-label pt-3">
+              Photos
+            </label>
+            <input
+              className="form-control"
+              type="file"
+              id="formFileMultiple"
+              multiple
+              name="url"
+              onChange={handleInputFiles}
+            />
+          </div>
         </form>
       </div>
       {/* -- Input zip -- */}
@@ -272,32 +278,23 @@ function UploadProduct() {
         </label>
         <input className="form-control" type="file" id="file-input" multiple />
       </div>
-      {/* -- Imgs -- queda pendiente de hacer */}
-      <div className="row">
-        <div className="col-lg-12 pt-2 ms-3">
-          <img
-            src=""
-            className="img-fluid img_product_page img_upload_sizes me-2"
-            alt="Product Image"
-          />
-          <img
-            src={hoodie_black}
-            className="img-fluid img_product_page img_upload_sizes me-2"
-            alt="Product View 1"
-          />
-
-          <img
-            src={hoodie_black}
-            className="img-fluid img_product_page img_upload_sizes me-2"
-            alt="Product View 2"
-          />
-
-          <img
-            src={hoodie_black}
-            className="img-fluid img_product_page img_upload_sizes me-2"
-            alt="Product View 3"
-          />
+      {/* -- Imgs -- */}
+      <div className="container-fluid">
+        <div className="row d-flex">
+          {newFile3D.url.map((url, index) => (
+            <div
+              key={index}
+              className="col-lg-2 pt-2 ms-3 img_upload_sizes mb-2 me-2"
+            >
+              <img
+                src={url}
+                className="img-fluid img_product_page me-2"
+                alt={`Product View ${index + 1}`}
+              />
+            </div>
+          ))}
         </div>
+
         <div className="row">
           <div className="col-lg-2">
             <button

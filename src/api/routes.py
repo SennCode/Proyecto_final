@@ -115,7 +115,21 @@ def get_user(id):
     if not user:
         return jsonify({'msg': 'User not found'}), 404
 
-    return jsonify(user.serialize())
+    return jsonify(user.serialize()),200
+
+# ---------------------
+# Buscar usuario por username
+# ---------------------
+@api.route('/users/username', methods=['GET'])
+@jwt_required()
+def get_user_by_username():
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
+
+    if not user:
+        return jsonify({'msg': 'User not found'}), 400
+
+    return jsonify(user.serialize()), 200
 
 # -------------------
 # Actualizar usuario
@@ -265,11 +279,38 @@ def create_file():
 @api.route("/upload", methods=["POST"])
 def upload_image():
     archivo = request.files.get('archivo')
-    if archivo :
+    if archivo:
         data = cloudinary.uploader.upload(archivo)
         url_image = data["secure_url"]
-        return jsonify(data), 201
+        return url_image, 201
     return jsonify({"msg": "Error!"}), 401
+
+
+# ----------
+# Avatar
+# ----------
+
+@api.route('/change_avatar', methods=['POST'])
+@jwt_required()
+def change_avatar():
+    # Obtener el usuario actualmente autenticado
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
+
+    # Obtener el archivo cargado por el usuario
+    avatar_file = request.files['avatar']
+
+    # Cargar la imagen en Cloudinary
+    result = cloudinary.uploader.upload(avatar_file)
+
+    # Actualizar la URL de la imagen en la base de datos
+    user.img = result['secure_url']
+    db.session.commit()
+
+    # Devolver una respuesta al usuario
+    flash('Avatar actualizado')
+    return redirect(url_for('profile'))
+
 
 # ----------
 # FAVORITES

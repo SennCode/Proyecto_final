@@ -39,29 +39,236 @@ const Profile = () => {
           <div className="loader">Loading...</div>
         </div>
       ) : (
-        <div className="container-fluid padindg_search_list p_card_gender">
-          <div className="row ">
+        <div className="container-fluid padindg_search_list p_card_gender pading_avatar">
+          <div className="row d-flex">
             <div className="col-lg-6 col-md-6 col-sm-6">
               <div className="card-body mt-3">
-                <img
-                  src={Alien}
-                  className="avatar_edit rounded-circle me-2 mb-5"
-                  alt="Product View 3"
+                <div>
+                  <h4>Username</h4>
+                </div>
+                <i className="far fa-edit"></i>
+                <label htmlFor="formFileMultiple" className="form-label pt-3">
+                  <img
+                    src={Alien}
+                    className="avatar_edit rounded-circle me-2 mb-5"
+                    alt="Product View 3"
+                  />
+                </label>
+                <input
+                  hidden
+                  className="form-control"
+                  type="file"
+                  id="formFileMultiple"
+                  multiple
+                  name="url"
                 />
-                <p>Username</p>
-                <div className="mt-5 pt-2">
-                  <button
-                    type="button"
-                    className="btn button_product_page text_product_page btn-sm ms-1"
-                  >
-                    Edit profile
+                <form
+                  action="/api/change_avatar"
+                  method="post"
+                  encType="multipart/form-data"
+                >
+                  <div className="form-group">
+                    <label htmlFor="avatar">Avatar:</label>
+                    <input
+                      type="file"
+                      className="form-control-file ms-5"
+                      id="avatar"
+                      name="avatar"
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary">
+                    Guardar cambios
                   </button>
+                </form>
+                <hr />
+                <div className="mt-5 pt-2">
+                  <div className="d-grid gap-2 d-md-block">
+                    {/* BOTON NEW USERNAME */}
+                    <button
+                      type="button"
+                      className="btn btn-primary mb-3 me-2 btn-sm col-lg-6 col-md-6 "
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      data-bs-whatever="@mdo"
+                    >
+                      Edit username
+                    </button>
+                    {/* BOTON NEW PASSWORD */}
+                    <button
+                      type="button"
+                      className="btn btn-primary mb-3 me-2 btn-sm col-lg-6 col-md-6"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
+                      data-bs-whatever="@mdo"
+                    >
+                      Edit password
+                    </button>
+                    <div className="d-grid gap-3 d-md-block">
+                      {/* BOTON FAVORITES */}
+                      <button
+                        type="button"
+                        className="btn btn-primary mb-3 btn-sm me-2 col-lg-6 col-md-6"
+                        onClick={() => navigate("/favorites")}
+                      >
+                        My favorites
+                      </button>{" "}
+                      {/* BOTON UPLOAD PRODUCT */}
+                      <button
+                        type="button"
+                        className="btn btn-primary mb-3 btn-sm me-2 col-lg-6 col-md-6"
+                        onClick={() => navigate("/upload_product")}
+                      >
+                        Upload new file
+                      </button>{" "}
+                      {/* BOTON ELIMINAR USUARIO*/}
+                      <button
+                        type="button"
+                        className="btn btn-danger mb-3 btn-sm me-2 col-lg-6 col-md-6"
+                      >
+                        Delete user
+                      </button>{" "}
+                    </div>
+                  </div>
+
+                  {/* MODAL NEW USERNAME */}
+                  <div
+                    className="modal fade"
+                    id="exampleModal"
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5"
+                            id="exampleModalLabel"
+                          >
+                            Edit:
+                          </h1>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          <form>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="recipient-name"
+                                className="col-form-label"
+                              >
+                                New username:
+                              </label>
+                              <input
+                                type="text"
+                                required
+                                className="form-control"
+                                id="floatingInput"
+                                placeholder="your new username"
+                                name="username"
+                              />
+                            </div>
+                          </form>
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="button" className="btn btn-primary">
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* MODAL NEW PASSWORD */}
+                  <div
+                    className="modal fade"
+                    id="exampleModal2"
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5"
+                            id="exampleModalLabel"
+                          >
+                            Edit:
+                          </h1>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          <form>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="recipient-name"
+                                className="col-form-label"
+                              >
+                                Current password:
+                              </label>
+                              <input
+                                type="password"
+                                className="form-control"
+                                id="floatingPassword"
+                                placeholder="Current password"
+                                name="password"
+                              />
+                            </div>
+                            <div className="mb-3">
+                              <label
+                                htmlFor="message-text"
+                                className="col-form-label"
+                              >
+                                New password:
+                              </label>
+                              <input
+                                type="password"
+                                className="form-control"
+                                id="floatingPassword"
+                                placeholder="New password"
+                                name="password"
+                              />
+                            </div>
+                          </form>
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="button" className="btn btn-primary">
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="col-lg-2 col-md-2 col-6 my-2">
-              <p className="mb-5">My files</p>
+            <div className="col-lg-2 col-md-2 col-xs-6 my-2">
+              <h4 className="mb-5">My files</h4>
               {store.files3d.length
                 ? store.files3d.map((file, id) =>
                     file.gender == "Children" &&

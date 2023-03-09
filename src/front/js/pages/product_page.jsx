@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "/workspace/react-flask-hello/src/front/styles/product_page.css";
-import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_black.png";
+import "/workspace/react-flask-hello/src/front/styles/product_page.css"; 
 import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
 import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 import { useParams, useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ import { Context } from "../store/appContext";
 const ProductPage = () => {
   const navigate = useNavigate()
   const { store, actions } = useContext(Context);
-  const { id, user_id } = useParams();
+  const { id, username } = useParams();
   const [user, setUser] = useState({});
   const [detalle, setDetalle] = useState({});
   const [loader, setLoader] = useState(true);
@@ -31,8 +30,17 @@ const ProductPage = () => {
       }
     };
     const fetchUser = async () => {
+      const token = localStorage.getItem('jwt-token');
       try {
-        const res = await fetch(`${config.HOSTNAME}/api/users/${user_id}`);
+      
+        const res = await fetch(`${config.HOSTNAME}/api/users/username`, {
+          method: "GET",
+          headers: {
+            "Contentet-Type": "application/json",
+            Authorization: "Bearer " + token
+          },})
+        if(!res.ok) throw Error("There was a problem in the login request")
+
         const data = await res.json();
         setUser(data);
         setLoader(false);
@@ -41,10 +49,11 @@ const ProductPage = () => {
       }
     };
     
-    console.log("user_id:", user_id);
+    console.log("username:", user);
     fetchUser();
     fetchDetalle();
-  }, [id, user_id]);
+  }, [id, username]);
+  
   
   const handleClick = () => {
     
@@ -95,6 +104,7 @@ const ProductPage = () => {
                       alt="Product View 3"
                     />{" "}
                     {user.username}
+                    {console.log(user)}
                     <h5 className="card-title text-start text_product_page pt-5">
                       Description
                     </h5>

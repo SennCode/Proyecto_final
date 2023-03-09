@@ -322,10 +322,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         .then((resp)=> {
           if(resp.status == 200){
             return resp.json()
-          }else {
-            setStore({"navigate": "/login" })
-          } 
-          
+          }
         })
         .then((data)=> {
           setStore({user:data})
