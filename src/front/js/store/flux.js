@@ -55,10 +55,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       createFile3D: async (newFile3D) => {
         try {
+          const token = localStorage.getItem("access_token")
           const response = await fetch(`${config.HOSTNAME}/api/create_file`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+                Authorization: "Bearer " + token
             },
             body: JSON.stringify(newFile3D),
           });

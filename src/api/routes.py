@@ -264,8 +264,10 @@ def get_one_print(id):
 # ---------------
 
 @api.route("/create_file", methods=['POST'])
-
+@jwt_required()
 def create_file():
+    current_user = get_jwt_identity()
+
     name = request.json.get('name', None)
     category = request.json.get('category', None)
     description = request.json.get('description', None)
@@ -274,13 +276,12 @@ def create_file():
     url = request.json.get('url', None)
     type_clothes = request.json.get('type_clothes', None)
     size = request.json.get('size', None)
-    user_id = request.json.get('user.id', None)
-    print(request.json)
+    print(url)
   
-
-    new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
-    gender=gender, url=url, type_clothes=type_clothes, size=size, user_id=user.id)
-    db.session.add(new_file)
+    for url_image in url:
+        new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
+        gender=gender, url=url_image, type_clothes=type_clothes, size=size, user_id=current_user)
+        db.session.add(new_file)
     db.session.commit()
 
     return jsonify({"msg": 'File created successfully!', 'file': new_file.serialize()}), 201
@@ -294,7 +295,7 @@ def upload_image():
     if archivo:
         data = cloudinary.uploader.upload(archivo)
         url_image = data["secure_url"]
-        return url_image, 201
+        return jsonify({"url_image": url_image}), 201
     return jsonify({"msg": "Error!"}), 401
 
 

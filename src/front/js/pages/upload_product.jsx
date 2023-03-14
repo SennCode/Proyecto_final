@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "/workspace/react-flask-hello/src/front/styles/upload_product.css";
 import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_black.png";
 import { Context } from "../store/appContext.js";
@@ -6,6 +6,7 @@ import config from "../store/config.js";
 
 function UploadProduct() {
   const { store, actions } = useContext(Context);
+  const [ bool, setBool] = useState(false)
   const [newFile3D, setNewFile3D] = useState({
     category: "",
     name: "",
@@ -13,15 +14,20 @@ function UploadProduct() {
     file_type: "",
     gender: "",
     url: [],
+    files: [],
     type_clothes: "",
     size: "",
   });
 
-  const sendImage = (file) => {
-    console.log(">>> send image");
-    const body = new FormData();
+  const sendImage = () => {
+    
+    const fileInput = document.getElementById("formFileMultiple");
+    const files = Array.from(fileInput.files);
+    files.forEach((file) => {
+     
+      const body = new FormData();
     body.append("archivo", file);
-
+    
     fetch(`${config.HOSTNAME}/api/upload`, {
       method: "POST",
       body: body,
@@ -30,11 +36,18 @@ function UploadProduct() {
         return response.json();
       })
       .then((data) => {
-        console.log({ data });
+        
+        setNewFile3D({
+          ...newFile3D,
+          url: [...newFile3D.url, data],
+        });
+        
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+    })
+    setBool(true)
   };
 
 
@@ -43,7 +56,7 @@ function UploadProduct() {
     const urls = files.map((file) => URL.createObjectURL(file));
     setNewFile3D({
       ...newFile3D,
-      url: urls,
+      files: urls,
     });
   };
 
@@ -52,23 +65,35 @@ function UploadProduct() {
     const inputValue = e.target.value;
     setNewFile3D((prevState) => ({ ...prevState, [inputName]: inputValue }));
   };
-  console.log(newFile3D);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const fileInput = document.getElementById("formFileMultiple");
-    const files = Array.from(fileInput.files);
-    files.forEach((file) => sendImage(file));
-    const urls = files.map(
-      (file) => `${config.HOSTNAME}/api/upload/${file.name}`
-    );
-    const newFile3DWithUrl = {
-      ...newFile3D,
-      url: urls,
-    };
-    actions.createFile3D(newFile3DWithUrl);
-    console.log(newFile3DWithUrl)
+    sendImage()
+  //  if ( ) {
+  //   console.log(newFile3D)
+  //   actions.createFile3D(newFile3D)}
+    // const urls = files.map(
+    //   (file) => `${config.HOSTNAME}/api/upload/${file.name}`
+    // );
+    
+    // const newFile3DWithUrl = {
+    //   ...newFile3D,
+    //   url: urls,
+    // };
+    // console.log(newFile3D)
+    // actions.createFile3D(newFile3D);
   };
+
+  useEffect(() => {
+    console.log(newFile3D)
+    const fileInput = document.getElementById("formFileMultiple")
+    const files = Array.from(fileInput.files)
+    if (bool && files.length == newFile3D.url.length) {
+    actions.createFile3D(newFile3D);
+    setBool(false)
+  }
+    
+  }, [bool, newFile3D.url])
 
   const getTypeClothesOptions = () => {
     if (
@@ -265,7 +290,7 @@ function UploadProduct() {
               type="file"
               id="formFileMultiple"
               multiple
-              name="url"
+              name="files"
               onChange={handleInputFiles}
             />
           </div>
@@ -281,7 +306,7 @@ function UploadProduct() {
       {/* -- Imgs -- */}
       <div className="container-fluid">
         <div className="row d-flex">
-          {newFile3D.url.map((url, index) => (
+          {newFile3D.files.map((url, index) => (
             <div
               key={index}
               className="col-lg-2 pt-2 ms-3 img_upload_sizes mb-2 me-2"
