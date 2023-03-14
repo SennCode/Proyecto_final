@@ -5,13 +5,19 @@ import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 import { Link, useNavigate } from "react-router-dom";
 import "/workspace/react-flask-hello/src/front/styles/profile.css";
 
+import config from "../store/config.js";
+
 const Profile = () => {
   const { store, actions } = useContext(Context);
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState({});
   let navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data));
     setTimeout(() => {
       setLoader(false);
     }, 1000);
@@ -32,6 +38,29 @@ const Profile = () => {
     }
   }, [store.navigate]);
 
+  const handleSave = () => {
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setMessage("User updated successfully.");
+          response.json().then((data) => setUser(data));
+          onClose();
+        } else {
+          setMessage("An error occurred while updating the user.");
+        }
+      })
+      .catch((error) => {
+        setMessage("An error occurred while updating the user.");
+      });
+  };
+  
+
   return (
     <>
       {loader ? (
@@ -44,7 +73,7 @@ const Profile = () => {
             <div className="col-lg-6 col-md-6 col-sm-6">
               <div className="card-body mt-3">
                 <div>
-                  <h4>Username</h4>
+                  <h4>{user.username}</h4>
                 </div>
                 <i className="far fa-edit"></i>
                 <label htmlFor="formFileMultiple" className="form-label pt-3">
@@ -158,7 +187,7 @@ const Profile = () => {
                           <form>
                             <div className="mb-3">
                               <label
-                                htmlFor="recipient-name"
+                                htmlFor="username"
                                 className="col-form-label"
                               >
                                 New username:
@@ -167,14 +196,23 @@ const Profile = () => {
                                 type="text"
                                 required
                                 className="form-control"
-                                id="floatingInput"
+                                id="username"
                                 placeholder="your new username"
                                 name="username"
+                                value={user.user_id}
+                                onChange={(e) =>
+                                  setUser({ ...user, username: e.target.value })
+                                }
                               />
                             </div>
                           </form>
                         </div>
                         <div className="modal-footer">
+                          {message && (
+                            <div className="alert alert-primary" role="alert">
+                              {message}
+                            </div>
+                          )}
                           <button
                             type="button"
                             className="btn btn-secondary"
@@ -182,7 +220,11 @@ const Profile = () => {
                           >
                             Close
                           </button>
-                          <button type="button" className="btn btn-primary">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleSave}
+                          >
                             Save
                           </button>
                         </div>

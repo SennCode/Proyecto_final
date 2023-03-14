@@ -8,6 +8,10 @@ function Files3D_Men_Hoodies() {
   const { store, actions } = useContext(Context);
   const [loader, setLoader] = useState(true);
 
+  useEffect(() => {
+    actions.getFiles3D();
+  }, []);
+
   setTimeout(() => {
     setLoader(false);
   }, 1000);
@@ -31,11 +35,11 @@ function Files3D_Men_Hoodies() {
               ? store.files3d.map((file, i)  =>
                   file.gender == "Men" && file.type_clothes == "Hoodies" ? ( 
                     <div className="col-lg-3 col-md-4 col-6 my-2" key={i} >
-                      {console.log(file.user_id)}
+                      {console.log(store.files3d)}
                       <Link to={`/product_page/${file.id}`} key={file.id}>
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img
-                            src="https://res.cloudinary.com/dwssfgyty/image/upload/v1676451087/ueb7xb10s0sqe7jjcazv.png"
+                            src={file.url}
                             className="card-img-top"
                             alt="..."
                           />

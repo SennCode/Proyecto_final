@@ -20,6 +20,9 @@ const ProductPage = () => {
   }, 1000);
 
   useEffect(() => {
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data));
     const fetchDetalle = async () => {
       try {
         const res = await fetch(`${config.HOSTNAME}/api/store/${id}`);
@@ -29,28 +32,9 @@ const ProductPage = () => {
         console.error(error);
       }
     };
-    const fetchUser = async () => {
-      const token = localStorage.getItem('jwt-token');
-      try {
-      
-        const res = await fetch(`${config.HOSTNAME}/api/users/username`, {
-          method: "GET",
-          headers: {
-            "Contentet-Type": "application/json",
-            Authorization: "Bearer " + token
-          },})
-        if(!res.ok) throw Error("There was a problem in the login request")
-
-        const data = await res.json();
-        setUser(data);
-        setLoader(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     
     console.log("username:", user);
-    fetchUser();
+  
     fetchDetalle();
   }, [id, username]);
   
@@ -103,8 +87,9 @@ const ProductPage = () => {
                       className="img_avatar rounded-circle me-2"
                       alt="Product View 3"
                     />{" "}
-                    {user.username}
-                    {console.log(user)}
+                      User - {user.username}
+
+                    {console.log(user.username)}
                     <h5 className="card-title text-start text_product_page pt-5">
                       Description
                     </h5>
@@ -143,9 +128,9 @@ const ProductPage = () => {
             <div className="card">
               <div className="row g-0 ">
                 <div className="col-lg-3 col-md-3 col-3 imgs_small">
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
                 </div>
               </div>
             </div>

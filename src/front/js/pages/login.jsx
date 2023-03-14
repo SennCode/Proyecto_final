@@ -74,8 +74,6 @@ function Login() {
                           type="button"
                   
                           onClick={()=> { 
-                            console.log(email)
-                            console.log(password)
                             handleLogin(email, password)
                           }}
                         >

@@ -6,6 +6,7 @@ import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_blac
 import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
 import hoodie_clonX from "/workspace/react-flask-hello/src/front/img/hoodie_clonX.png";
 import socks from "/workspace/react-flask-hello/src/front/img/socks.png";
+import camiseta_negra from "/workspace/react-flask-hello/src/front/img/camiseta_negra_4geeks_.png";
 
 
 export const Home = () => {

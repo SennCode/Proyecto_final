@@ -1,7 +1,7 @@
 
 import os
 from flask_admin import Admin
-from .models import db, User, Files3D, Patterns, Prints, FavoritesFiles3D
+from .models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -14,7 +14,7 @@ def setup_admin(app):
     admin.add_view(ModelView(Files3D, db.session))
     admin.add_view(ModelView(Patterns, db.session))
     admin.add_view(ModelView(Prints, db.session))
-    admin.add_view(ModelView(FavoritesFiles3D, db.session))
+   
     
 
     # You can duplicate that line to add mew models

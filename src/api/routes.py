@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Files3D, Patterns, Prints, FavoritesFiles3D
+from api.models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -81,12 +81,13 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
+    
     user = User.query.filter_by(email=email).first()
 
     if user and bcrypt.check_password_hash(user.password, password):
         access_token = create_access_token(identity=user.id)
         
-        return jsonify({"access_token": access_token}), 200
+        return jsonify({"access_token": access_token, "user_id": user.id}), 200
 
     else:
         return jsonify({"msg": "wrong email or password!"}), 400
@@ -194,6 +195,16 @@ def store():
     prints = [one_print.serialize() for one_print in Prints.query.all()]
     return jsonify({"files3d": files3d, "patterns": patterns, "prints": prints})
 
+
+# ------------
+# STORE Relaton 3dfiles
+# ------------
+@app.route('/store/<int:files3d_id>/users')
+def get_users_for_files3d(files3d_id):
+    users = User.query.join(Files3DRelation).filter(Files3DRelation.files3d_id == files3d_id).all()
+    return jsonify([user.serialize() for user in users])
+
+
 # ------------
 # SEARCH
 # ------------
@@ -263,11 +274,12 @@ def create_file():
     url = request.json.get('url', None)
     type_clothes = request.json.get('type_clothes', None)
     size = request.json.get('size', None)
+    user_id = request.json.get('user.id', None)
     print(request.json)
   
 
     new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
-    gender=gender, url=url, type_clothes=type_clothes, size=size)
+    gender=gender, url=url, type_clothes=type_clothes, size=size, user_id=user.id)
     db.session.add(new_file)
     db.session.commit()
 
@@ -315,33 +327,4 @@ def change_avatar():
 # ----------
 # FAVORITES
 # ----------
-
-# Create a new favorite for a user
-@api.route('/users/favorites_files3d', methods=['GET', 'POST'])
-@jwt_required()
-def create_favorite():
-    current_user_id = get_jwt_identity()
-    data = request.get_json()
-    new_favorite = FavoritesFiles3D(user_id=current_user_id, files3d_id=data.get('files3d_id')) 
-    
-    db.session.add(new_favorite)
-    db.session.commit()
-    return jsonify(new_favorite.serialize()), 201
-
-# Get all favorites for a user
-@api.route('/users/<int:user_id>/favorites', methods=['GET'])
-def get_favorites(user_id):
-    favorites = Favorites.query.filter_by(user_id=user_id).all()
-    return jsonify([f.serialize() for f in favorites]), 200
-
-# Delete a favorite for a user
-@api.route('/users/<int:user_id>/favorites/<int:favorite_id>', methods=['DELETE'])
-def delete_favorite(user_id, favorite_id):
-    favorite = Favorites.query.filter_by(id=favorite_id, user_id=user_id).first()
-    if favorite:
-        db.session.delete(favorite)
-        db.session.commit()
-        return jsonify({'message': 'Favorite deleted successfully'}), 200
-    else:
-        return jsonify({'error': 'Favorite not found'}), 404
 

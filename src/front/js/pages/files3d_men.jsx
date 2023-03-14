@@ -34,7 +34,7 @@ function Files3D_Men() {
                       <Link to={`/product_page/${file.id}`} key={file.id}>
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img
-                            src="https://res.cloudinary.com/dwssfgyty/image/upload/v1676451087/ueb7xb10s0sqe7jjcazv.png"
+                            src={file.url}
                             className="card-img-top"
                             alt="..."
                           />

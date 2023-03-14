@@ -111,41 +111,70 @@ class Prints(db.Model):
             "type_clothes": self.type_clothes,
         }
 
-# Tabla Favoritos
+# REALACIONES PARA:
 
-class FavoritesFiles3D(db.Model):
-    __tablename__ = "favorites_files3d"
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship("User", backref="favorites_files3d")
-    files3d_id = db.Column(db.Integer, db.ForeignKey(
-        'files3d.id'), nullable=False)
-    files3d = db.relationship("Files3D", backref="favorites_files3d")
+class Files3DRelation(db.Model):
+    __tablename__ = "files3DRelation"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=False)
+    files3d_id = db.Column(db.Integer, db.ForeignKey('files3d.id'), nullable=False, unique=False)
 
-    def __repr__(self):
-        return self.user_id
-
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "files3d_id": self.files3d_id,
-            "user": self.user.serialize(),
-            "files3d": self.files3d.serialize()
+    def findFile3d(self):
+        return{
+            "files3d_id": self.files3d_id
         }
 
-# class Favorites(db.Model):
-#     __tablename__ = "favorites"
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-#     files3d_id = db.Column(db.Integer, db.ForeignKey(
-#         'files3d.id'), nullable=False)
-#     patterns_id = db.Column(db.Integer, db.ForeignKey(
-#         'patterns.id'), nullable=False)
-#     prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False)
+    def findUser(self):
+        return{
+            "user_id": self.user_id
+        }
 
-#     def serialize(self):
-#         return {
-#             "id": self.id
-#         }
+        def serialize(self):
+            return{
+                "files3d_id": self.files3d_id,
+                "user_id": self.user_id
+            }
+
+class PatternsRelation(db.Model):
+    __tablename__ = "patternsRelation"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=False)
+    patterns_id = db.Column(db.Integer, db.ForeignKey('patterns.id'), nullable=False, unique=False)
+
+    def findPattern(self):
+        return{
+            "patterns_id": self.patterns_id
+        }
+
+    def findUser(self):
+        return{
+            "user_id": self.user_id
+        }
+
+        def serialize(self):
+            return{
+                "patterns_id": self.patterns_id,
+                "user_id": self.user_id
+            }
+
+class PrintsRelation(db.Model):
+    __tablename__ = "printsRelation"
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=False)
+    prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False, unique=False)
+
+    def findPrint(self):
+        return{
+            "prints_id": self.prints_id
+        }
+
+    def findUser(self):
+        return{
+            "user_id": self.user_id
+        }
+
+        def serialize(self):
+            return{
+                "prints_id": self.prints_id,
+                "user_id": self.user_id
+            }
