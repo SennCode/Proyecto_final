@@ -83,14 +83,14 @@ const ProductPage = () => {
                 <div className="col-md-6">
                   <div className="card-body mt-3">
                     <img
-                      src={Alien}
+                      src={user.img}
                       className="img_avatar rounded-circle me-2"
                       alt="Product View 3"
                     />{" "}
-                      User - {user.username}
+                      <h5 className="mt-2">{user.username}</h5>
 
-                    {console.log(user.username)}
-                    <h5 className="card-title text-start text_product_page pt-5">
+                    
+                    <h5 className="card-title text-start text_product_page mt-5">
                       Description
                     </h5>
                     <hr/>
@@ -127,10 +127,10 @@ const ProductPage = () => {
 
             <div className="card">
               <div className="row g-0 ">
-                <div className="col-lg-3 col-md-3 col-3 imgs_small">
+                <div className="col-lg-4 col-md-3 col-3 imgs_small">
                   <img src={detalle.url} className="rounded img-fluid" alt="..." />
-                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
-                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid ms-1 me-1" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid pe-2" alt="..." />
                 </div>
               </div>
             </div>

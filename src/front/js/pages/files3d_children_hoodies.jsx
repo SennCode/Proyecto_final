@@ -41,7 +41,7 @@ function Files3D_Children_Hoodies() {
                             alt="..."
                           />
                           <div className="card-body">
-                            <p className="card-text text-dark">
+                            <p className="card-text text-dark text-truncate fs-6 fw-light">
                               {file.name}/{file.file_type}
                             </p>
                           </div>

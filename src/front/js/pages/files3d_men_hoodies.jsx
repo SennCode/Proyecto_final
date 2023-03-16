@@ -40,11 +40,11 @@ function Files3D_Men_Hoodies() {
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img
                             src={file.url}
-                            className="card-img-top"
+                            className="card-img-top "
                             alt="..."
                           />
                           <div className="card-body">
-                            <p className="card-text text-dark">
+                            <p className="card-text text-dark  text-truncate fs-6 fw-light">
                               {file.name}/{file.file_type}/{file.gender}
                             </p>
                           </div>

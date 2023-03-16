@@ -90,6 +90,10 @@ function UploadProduct() {
     const files = Array.from(fileInput.files)
     if (bool && files.length == newFile3D.url.length) {
     actions.createFile3D(newFile3D);
+    setNewFile3D({
+      ...newFile3D,
+      url: [],
+    });
     setBool(false)
   }
     

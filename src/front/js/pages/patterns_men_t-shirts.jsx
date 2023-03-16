@@ -40,7 +40,7 @@ function Patterns_Men_Tshirts() {
                             alt="..."
                           />
                           <div className="card-body">
-                            <p className="card-text text-dark">
+                            <p className="card-text text-dark text-truncate fs-6 fw-light">
                               {file.name}/{file.file_type}
                             </p>
                           </div>

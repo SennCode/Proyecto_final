@@ -1,8 +1,12 @@
 .avatar_edit{
-    width: 300px;
-    height: 300px;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
 }
 
 .pading_avatar{
-    padding: 5% 10%;
+    padding: 5% 12%;
 }
+
+
+.profile_text{font-family: 'DM Sans', sans-serif;}

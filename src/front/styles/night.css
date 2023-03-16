@@ -1,0 +1,79 @@
+.isNightMode {
+    background-color: black;
+    color:white;
+  };
+
+.btn-dark-mode{
+    border-radius: 10px;
+  }
+
+  .text-day {
+    color: black;
+    background-color: white;
+  }
+
+  
+  .text-night {
+    color: white;
+    background-color: black;
+  }
+
+body.isNightMode h1:not(.nocturno),
+body.isNightMode h2:not(.nocturno),
+body.isNightMode h3:not(.nocturno),
+body.isNightMode h4:not(.nocturno),
+body.isNightMode h5:not(.nocturno),
+body.isNightMode h6:not(.nocturno),
+body.isNightMode hr:not(.nocturno),
+body.isNightMode p:not(.nocturno) {
+  color: white;
+}
+
+body.isNightMode button:not(.nocturno){
+    background-color: white;
+    color: black;
+}
+
+body.isNightMode nav {
+    background-color: #333;
+    color: white;
+  }
+
+  body.isNightMode .navbar-nav li a {
+    color: white;
+  }
+
+  body.isNightMode .genders_titles {
+    background:
+      linear-gradient(
+        to right,
+        rgb(7, 7, 7),
+        rgb(63, 63, 63)
+      ),
+      linear-gradient(
+        to right,
+        rgb(2, 2, 2),
+        rgba(55, 251, 104, 0.493),
+        rgb(2, 255, 57)
+      );
+    background-size: 100% 0.5px, 0 0.5px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 400ms;
+    color: white; /* Cambia el color del texto a blanco */
+  }
+  
+  body.isNightMode .genders_titles:hover {
+    background-size: 0 2px, 100% 2px;
+  }
+
+
+  body.isNightMode .card {
+    background-color: rgb(123, 123, 123);
+  }
+
+  body.isNightMode .fa-user-circle {
+    color: rgba(255, 255, 255, 0.804);
+    height: 30px;
+    width: 30px;
+  }

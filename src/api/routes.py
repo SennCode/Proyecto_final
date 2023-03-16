@@ -276,15 +276,15 @@ def create_file():
     url = request.json.get('url', None)
     type_clothes = request.json.get('type_clothes', None)
     size = request.json.get('size', None)
-    print(url)
+    print(request.json)
   
-    for url_image in url:
-        new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
-        gender=gender, url=url_image, type_clothes=type_clothes, size=size, user_id=current_user)
-        db.session.add(new_file)
-    db.session.commit()
+    # for url_image in url:
+    #     new_file = Files3D(name=name, category=category, description=description, file_type= file_type,
+    #     gender=gender, url=url_image, type_clothes=type_clothes, size=size, user_id=current_user)
+    #     db.session.add(new_file)
+    # db.session.commit()
 
-    return jsonify({"msg": 'File created successfully!', 'file': new_file.serialize()}), 201
+    return jsonify({"msg": 'File created successfully!'}), 201
 
 # ----------
 # cloudinary
@@ -321,8 +321,8 @@ def change_avatar():
     db.session.commit()
 
     # Devolver una respuesta al usuario
-    flash('Avatar actualizado')
-    return redirect(url_for('profile'))
+    
+    return jsonify({"msg": "Success!!"}), 201
 
 
 # ----------

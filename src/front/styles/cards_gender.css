@@ -21,24 +21,9 @@
 }
 
 .card_gender_border {
-  border: 0.1px solid rgb(242, 242, 242);
+  border: 0.1px solid rgb(216, 215, 215);
   border-radius: 2%;
   transition: border 0.1s;
-}
-
-.card_gender_border:hover {
-  padding: -3rem;
-  border-width: 0.1px;
-  border-style:solid;
-  border-image: 
-    linear-gradient(
-      to bottom, 
-      rgb(255, 153, 1), 
-      rgb(1, 107, 255),
-      rgb(255, 1, 1),  
-      rgba(255, 255, 255, 0)
-    ) 1 100%;
-
 }
 
 .container_foto:hover {
@@ -47,6 +32,12 @@
 
 .container_foto:hover img {
   
-  transform: scale(1.1);
+  transform: scale(0.9);
 
 }
+
+.card_img {
+ }
+
+    
+    

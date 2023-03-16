@@ -5,21 +5,10 @@
 
 }
 
-.button_product_page {
-  background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
-  font-family: inherit;
-  color: #fff;
-  text-decoration: none;
-  transition: background-color 1s;
-}
-.button_product_page:hover {
-  background-color: #e91e63;
-  color: #fff;
-}
-
 .img_avatar {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 }
 
 .text_product_page {
@@ -29,13 +18,6 @@
   font-smoothing: antialiased;
 }
 
-.fa-heart_custom {
-  font-size: 2em;
-  background: linear-gradient(to bottom right, #fa040c, #d65555);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-}
 
 .butons_download_avatar{
   padding-top: 8%;
@@ -47,4 +29,8 @@
 
 .avatar_padding{
   padding-left: 0;
+}
+
+.card{
+  background-color: #d6d3d314;
 }

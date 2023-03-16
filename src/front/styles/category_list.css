@@ -1,4 +1,6 @@
-
+.cards_height{
+  height: 200px;
+}
 .padindg_category_list{
     padding: 5% 2%;
     font-family: 'DM Sans', sans-serif;

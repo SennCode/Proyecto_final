@@ -24,7 +24,7 @@
 }
 
 .hover-navbar:hover {
-  color: rgb(171, 28, 238);
+  color: rgb(94, 93, 94);
 }
 
 a {
@@ -41,14 +41,6 @@ a {
 
 .background_user_dropdown {
   background: -webkit-linear-gradient(rgb(94, 92, 92), rgb(0, 0, 0));
-}
-
-.dropdown-item-backgorund {
-  color: rgb(254, 253, 255) !important;
-}
-
-.dropdown-item-backgorund:hover {
-  background: linear-gradient(to bottom, rgb(103, 177, 243), rgb(149, 0, 255));
 }
 
 .hidden {

@@ -16,7 +16,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/men/hoodies">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Hoodies</p>
                 </div>
@@ -26,7 +26,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/men/t-shirts">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">T-Shirt</p>
                 </div>
@@ -36,7 +36,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/men/trousers">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Trousers</p>
                 </div>
@@ -53,7 +53,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/women/dresses">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Dresses</p>
                 </div>
@@ -63,7 +63,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/women/blouses">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Blouses</p>
                 </div>
@@ -73,7 +73,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/women/trousers">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Trousers</p>
                 </div>
@@ -90,7 +90,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/children/hoodies">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Hoodies</p>
                 </div>
@@ -100,7 +100,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/children/t-shirts">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">T-Shirt</p>
                 </div>
@@ -110,7 +110,7 @@ function Patterns_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="patterns_category/children/trousers">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={patron} className="card-img" alt="..." />
+                <img src={patron} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Trousers</p>
                 </div>

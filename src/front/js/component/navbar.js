@@ -4,12 +4,18 @@ import "/workspace/react-flask-hello/src/front/styles/navbar.css";
 import config from "../store/config";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useParams } from "react-router-dom";
+import "/workspace/react-flask-hello/src/front/styles/night.css";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [files, setFiles] = useState([]);
+  const { id, username } = useParams();
+  const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
   const { store, actions } = useContext(Context);
+  const [loggedOut, setLoggedOut] = useState(false);
+  const [isNightMode, setIsNightMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -28,6 +34,34 @@ export const Navbar = () => {
       });
   };
 
+  // DARK MODE
+  
+  useEffect(() => {
+    localStorage.setItem("isNightMode", isNightMode);
+  }, [isNightMode]);
+
+  useEffect(() => {
+    const storedIsNightMode = localStorage.getItem("isNightMode");
+    if (storedIsNightMode !== null) {
+      setIsNightMode(JSON.parse(storedIsNightMode));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isNightMode) {
+      document.body.classList.add("isNightMode");
+    } else {
+      document.body.classList.remove("isNightMode");
+    }
+  }, [isNightMode]);
+
+  useEffect(() => {
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`)
+      .then((res) => res.json())
+
+      .then((data) => setUser(data));
+  }, [user]);
+
   const changeState = (e) => {
     setSearch(e.target.value);
     console.log(e.target.value);
@@ -43,6 +77,11 @@ export const Navbar = () => {
 
   const handleLinkClick = () => {
     setIsOpen(false);
+
+    const handleLogout = () => {
+      // Código para cerrar sesión
+      setLoggedOut(true);
+    };
   };
 
   return (
@@ -114,10 +153,17 @@ export const Navbar = () => {
                 aria-label="Search"
                 onChange={changeState}
               />
-              <button className="btn button_create_user" type="submit">
+              <button className="btn btn-dark" type="submit">
                 <i className="fa fa-search"></i>
               </button>
             </form>
+            <button
+              className="btn btn-dark btn-dark-mode btn-sm"
+              onClick={() => setIsNightMode(!isNightMode)}
+              style={{ borderRadius: "50%" }}
+            >
+              <i className={`fas ${isNightMode ? "fa-sun" : "fa-moon"}`}></i>
+            </button>
 
             {/* DESPLEGABLE USUARIO */}
 
@@ -130,7 +176,17 @@ export const Navbar = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i className="far fa-user-circle fa-2x me-5 mt-3 mb-3 hover-navbar" />
+                  {user.img && localStorage.getItem("access_token") ? (
+                    <img
+                      src={`${user.img}?${loggedOut}`}
+                      alt="User avatar"
+                      className="rounded-circle img_avatar"
+                      width="40"
+                      height="40"
+                    />
+                  ) : (
+                    <i className="far fa-user-circle fa-2x me-5 mt-3 mb-3 hover-navbar" />
+                  )}
                 </a>
                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end background_user_dropdown">
                   {localStorage.getItem("access_token") ? (
@@ -146,7 +202,6 @@ export const Navbar = () => {
                       </li>
                       <li>
                         <button
-                         
                           className="dropdown-item dropdown-item-backgorund"
                           onClick={() => navigate("/favorites")}
                         >
@@ -163,6 +218,7 @@ export const Navbar = () => {
                           className="dropdown-item dropdown-item-backgorund"
                           onClick={() => {
                             localStorage.removeItem("access_token");
+                            localStorage.removeItem("user_id");
                             navigate("/");
                           }}
                         >

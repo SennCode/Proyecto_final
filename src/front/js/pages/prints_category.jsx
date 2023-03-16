@@ -16,7 +16,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/men/abstract">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text decoration_text">Abstract</p>
                 </div>
@@ -26,7 +26,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/men/stripes">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Stripes</p>
                 </div>
@@ -36,7 +36,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/men/geometric">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Geometric</p>
                 </div>
@@ -53,7 +53,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/women/floral">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Floral</p>
                 </div>
@@ -63,7 +63,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/women/geometric">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Geometric</p>
                 </div>
@@ -73,7 +73,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/women/animal">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Animal</p>
                 </div>
@@ -90,7 +90,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/children/animals">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Animals</p>
                 </div>
@@ -100,7 +100,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/children/sports">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Sports</p>
                 </div>
@@ -110,7 +110,7 @@ function Prints_category() {
           <div className="pricing-column col-lg-4 col-md-4">
             <a className="text-dark" href="prints_category/children/geometric">
               <div className="card text-bg-dark card_gender_background card_gender_border container_foto mb-2">
-                <img src={print} className="card-img" alt="..." />
+                <img src={print} className="card_img" alt="..." />
                 <div className="card-body">
                   <p className="card-text">Geometric</p>
                 </div>
