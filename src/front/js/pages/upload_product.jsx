@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "/workspace/react-flask-hello/src/front/styles/upload_product.css";
-import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_black.png";
 import { Context } from "../store/appContext.js";
 import config from "../store/config.js";
 

@@ -32,10 +32,9 @@ function Files3D_Men_Hoodies() {
           </a>
           <div className="row ">
             {store.files3d.length
-              ? store.files3d.map((file, i)  =>
-                  file.gender == "Men" && file.type_clothes == "Hoodies" ? ( 
-                    <div className="col-lg-3 col-md-4 col-6 my-2" key={i} >
-                      {console.log(store.files3d)}
+              ? store.files3d.map((file, i) =>
+                  file.gender == "Men" && file.type_clothes == "Hoodies" ? (
+                    <div className="col-lg-3 col-md-4 col-6 my-2" key={i}>
                       <Link to={`/product_page/${file.id}`} key={file.id}>
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img

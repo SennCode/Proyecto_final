@@ -178,3 +178,22 @@ class PrintsRelation(db.Model):
                 "prints_id": self.prints_id,
                 "user_id": self.user_id
             }
+
+# FAVORITES
+
+class Favorites(db.Model):
+    __tablename__ = "favorites"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=False)
+    files3d_id = db.Column(db.Integer, db.ForeignKey('files3d.id'), nullable=False, unique=False)
+    patterns_id = db.Column(db.Integer, db.ForeignKey('patterns.id'), nullable=False, unique=False)
+    prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False, unique=False)
+
+    def serialize(self):
+        return{
+            "id": self.id,
+            "user_id": self.id,
+            "files3d_id": self.files3d_id,
+            "patterns_id": self.patterns_id,
+            "prints_id": self.prints_id
+        }

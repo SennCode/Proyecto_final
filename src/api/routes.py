@@ -329,3 +329,31 @@ def change_avatar():
 # FAVORITES
 # ----------
 
+@api.route('/favorites', methods=['POST'])
+@jwt_required()
+def add_to_favorites():
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
+
+    # Obtener los datos del producto que se quiere agregar a favoritos
+    product_type = request.json['product_type']
+    product_id = request.json['product_id']
+
+    # Validar que los datos sean correctos
+    if product_type not in ['files3d', 'patterns', 'prints']:
+        abort(400, 'Invalid product type')
+
+    # Crear un objeto Favorites y guardarlo en la base de datos
+    favorite = Favorites(user_id=user.id)
+
+    if product_type == 'files3d':
+        favorite.files3d_id = product_id
+    elif product_type == 'patterns':
+        favorite.patterns_id = product_id
+    else:
+        favorite.prints_id = product_id
+
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({"msg": "New favorite created!!"}), 201

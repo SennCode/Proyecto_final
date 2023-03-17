@@ -82,6 +82,8 @@ const Profile = () => {
       .catch((error) => {
         setMessage("An error occurred while updating the avatar.");
       });
+      
+      
   };
 
   const handleSave = () => {
@@ -137,6 +139,7 @@ const Profile = () => {
                   id="avatar"
                   name="avatar"
                   onChange={handleAvatarChange}
+                  
                 />
               </div>
             </div>
@@ -191,7 +194,10 @@ const Profile = () => {
                     <button
                       type="button"
                       className="btn btn-dark btn-sm"
-                      onClick={handleAvatarSave}
+                      onClick={() => {
+                        handleAvatarSave();
+                        
+                      }}
                     >
                       Save Changes
                     </button>
@@ -355,7 +361,7 @@ const Profile = () => {
             {store.files3d.map((file, id) => (
               <div className="col-lg-2 col-md-3 col-6 my-2 " key={file.id}>
                 <Link to={`/product_page/${file.id}`} key={file.id}>
-                <div class="card-group">
+                <div className="card-group">
                   <div className="card card_gender_border container_foto  ">
                     <img src={file.url} className="card-img-top  " alt="..." />
                     <div className="card-body">

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "/workspace/react-flask-hello/src/front/styles/product_page.css"; 
 import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
-import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 import { useParams, useNavigate } from "react-router-dom";
 import config from "../store/config";
 import config2 from "../store/config2";
@@ -14,6 +13,21 @@ const ProductPage = () => {
   const [user, setUser] = useState({});
   const [detalle, setDetalle] = useState({});
   const [loader, setLoader] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleFavorite = async () => {
+    const product_type = "files3d"
+    const product_id = detalle.id
+
+    try {
+      const new_favorite = await actions.addFavorites(product_type, product_id);
+      setIsFavorite(true);
+      console.log(`Se ha agregado el producto ${product_id} a la lista de favoritos`);
+    } catch (error) {
+      console.error("Error al agregar el favorito", error);
+    }
+  };
+  
 
   setTimeout(() => {
     setLoader(false);
@@ -33,19 +47,9 @@ const ProductPage = () => {
       }
     };
     
-    console.log("username:", user);
-  
     fetchDetalle();
   }, [id, username]);
   
-  
-  const handleClick = () => {
-    
-    const user_id = store.user_id;
-    const files3d_id = store.files3d_id;
-    actions.addFavorites(user_id, files3d_id);
-    console.log("Se ha agregado el producto " + detalle.id + " a la lista de favoritos");
-  };
   
 
   return (
@@ -110,14 +114,9 @@ const ProductPage = () => {
                       >
                         Download
                       </button>
-                      <button
-                        onClick={handleClick}
-                        href="#"
-                        className="btn button border border-0 btn-lg me-1 "
-                      >
-                        
-                        <i className="fa fa-heart text-danger" />
-                      </button>
+                      <button onClick={handleFavorite} className="btn button border border-0 btn-lg me-1">
+        <i className={`fa fa-heart ${isFavorite ? "text-danger" : "text-muted"}`} />
+      </button>
                     </div>
                     <div className="card-body avatar_padding"></div>
                   </div>
@@ -151,13 +150,7 @@ const ProductPage = () => {
 
             <div className="card mb-3">
               <div className="row g-0">
-                <div className="col-lg-6 col-md-6">
-                  <img
-                    src={hoodie}
-                    className="img-fluid rounded-start"
-                    alt="..."
-                  />
-                </div>
+                
                 <div className="col-md-6">
                   <div className="card-body mt-3">
                     

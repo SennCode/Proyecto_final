@@ -60,7 +60,7 @@ export const Navbar = () => {
       .then((res) => res.json())
 
       .then((data) => setUser(data));
-  }, [user]);
+  }, []);
 
   const changeState = (e) => {
     setSearch(e.target.value);
@@ -157,13 +157,14 @@ export const Navbar = () => {
                 <i className="fa fa-search"></i>
               </button>
             </form>
-            <button
+            <div><button
               className="btn btn-dark btn-dark-mode btn-sm"
               onClick={() => setIsNightMode(!isNightMode)}
               style={{ borderRadius: "50%" }}
             >
               <i className={`fas ${isNightMode ? "fa-sun" : "fa-moon"}`}></i>
-            </button>
+            </button></div>
+            
 
             {/* DESPLEGABLE USUARIO */}
 

@@ -12,9 +12,7 @@
 
 import config from "/workspace/react-flask-hello/src/front/js/store/config.js";
 
-
 const getState = ({ getStore, getActions, setStore }) => {
-  
   return {
     store: {
       users: [],
@@ -25,13 +23,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       user_id: null,
       search_results: [],
       favorites: [],
-      navigate: null
+      navigate: null,
     },
 
     actions: {
-
-      navigateNull: () =>{
-        setStore({"navigate": null})
+      navigateNull: () => {
+        setStore({ navigate: null });
       },
       // Obtenemos los datos de usuario desde la API y lo convertimos en un json
       //   y lo almacenamos en el store usando setStore
@@ -55,12 +52,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       createFile3D: async (newFile3D) => {
         try {
-          const token = localStorage.getItem("access_token")
+          const token = localStorage.getItem("access_token");
           const response = await fetch(`${config.HOSTNAME}/api/create_file`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-                Authorization: "Bearer " + token
+              Authorization: "Bearer " + token,
             },
             body: JSON.stringify(newFile3D),
           });
@@ -202,9 +199,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           if (response.ok) {
             localStorage.setItem("access_token", data.access_token);
-            localStorage.setItem("user_id", data.user_id)
+            localStorage.setItem("user_id", data.user_id);
             setStore({ access_token: data.access_token });
-            console.log(data)
+            console.log(data);
             return data;
           } else {
             throw new Error(data.msg);
@@ -275,30 +272,18 @@ const getState = ({ getStore, getActions, setStore }) => {
       // ----------------
       // ADD FAVORITES
       // ----------------
-        addFavorites: async () => {
-        const store = getStore();
-        // let auxFavorites = [...store.favorites];
-        // let itemFavorites = {
-        //   id: auxFavorites.length,
-        //   name: name,
-        // };
-        // auxFavorites.push(itemFavorites);
-        // setStore({ favorites: auxFavorites });
-
-        // const user_id = store.user_id; // Obtener el user_id del store
-        const files3d_id = store.files3d_id; // Obtener el files3d_id del store
-
-        const data = {
-          
-          files3d_id: files3d_id,
-        };
-
-        const response = await fetch(`${config.HOSTNAME}/api/users/favorites_files3d`, {
+      addFavorites: async (product_type, product_id) => {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(`${config.HOSTNAME}/favorites`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            product_type: product_type,
+            product_id: product_id,
+          }),
         });
 
         if (response.ok) {
@@ -306,32 +291,37 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore((store) => {
             return {
               ...store,
-              favorites: [...store.favorites, data],
-        }});
-          console.log(new_favorite); // Imprimir el nuevo favorito creado
+              favorites: [...store.favorites, new_favorite],
+            };
+          });
+          console.log(
+            "Se ha agregado el producto " +
+              product_id +
+              " a la lista de favoritos"
+          );
         } else {
           console.error("Error al crear el favorito");
-          }
+        }
       },
 
       getProfile: () => {
-        const token = localStorage.getItem("access_token")
-        fetch(`${config.HOSTNAME}/api/private`,{
+        const token = localStorage.getItem("access_token");
+        fetch(`${config.HOSTNAME}/api/private`, {
           method: "GET",
           headers: {
-            "Contentet-Type": "application/json",
-            Authorization: "Bearer " + token
-          }
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
         })
-        .then((resp)=> {
-          if(resp.status == 200){
-            return resp.json()
-          }
-        })
-        .then((data)=> {
-          setStore({user:data})
-        })
-      }
+          .then((resp) => {
+            if (resp.status == 200) {
+              return resp.json();
+            }
+          })
+          .then((data) => {
+            setStore({ user: data });
+          });
+      },
     },
   };
 };

@@ -1,7 +1,7 @@
 
 import os
 from flask_admin import Admin
-from .models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation
+from .models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation, Favorites
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
