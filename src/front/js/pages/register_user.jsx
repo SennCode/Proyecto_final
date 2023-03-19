@@ -44,8 +44,6 @@ function Create_user() {
     setLoader(false);
   }, 1000);
 
-  
-
   return (
     <>
       {loader ? (

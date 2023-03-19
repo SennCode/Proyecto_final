@@ -70,7 +70,7 @@ function Login() {
                     <div className="text-center pt-1 mb-5 pb-1">
                       <div className="d-grid gap-2">
                         <button
-                          className="btn btn-primary btn-block button_create_user mb-3"
+                          className="btn btn-primary btn-block mb-3"
                           type="button"
                   
                           onClick={()=> { 

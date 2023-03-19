@@ -38,7 +38,7 @@ function SearchResults() {
               <Link to={`/product_page/${file.id}`} key={file.id}>
                 <div className="card card_gender_background card_gender_border container_foto">
                   <img
-                    src="file.url"
+                    src={file.url}
                     className="card-img-top"
                     alt="..."
                   />

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation
+from api.models import db, User, Files3D, Patterns, Prints, Files3DRelation, PatternsRelation, PrintsRelation, Favorites
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -144,25 +144,31 @@ def update_user(id):
 
     if not user:
         return jsonify({'msg': 'User not found'}), 404
+
+    # Validar que el usuario que realiza la solicitud tiene permiso para actualizar la información
     if user.id != current_user:
         return jsonify({'msg': 'Unauthorized'}), 401
 
-    username = request.json.get("username", user.username)
-    email = request.json.get("email", user.email)
-    password = ('password', user.password)
-    is_active = request.json.get("is_active", user.is_active)
+    # Verificar que el nombre de usuario proporcionado sea válido y único
+    username = request.json.get("username")
+    if username and User.query.filter_by(username=username).first():
+        return jsonify({'msg': 'Invalid username'}), 400
 
-    # Hash teh password
-    password = bcrypt.generate_password_hash(password).decode('utf-8')
+    # Verificar que la contraseña proporcionada sea válida
+    password = request.json.get("password")
+    if password and len(password) < 8:
+        return jsonify({'msg': 'Invalid password'}), 400
 
-    user.username = username
-    user.email = email
-    user.password = password
-    user.is_active = is_active
+    # Actualizar la información del usuario
+    user.username = username or user.username
+    user.password = bcrypt.generate_password_hash(password).decode('utf-8') if password else user.password
 
     db.session.commit()
 
     return jsonify(user.serialize()), 200
+
+
+
 
 # -------------------
 # Borrar usuario
@@ -237,9 +243,9 @@ def get_file3d(id):
 # LISTAR PATTERN
 # ----------------
 
-@api.route("/store/<int:id>", methods=['GET'])
+@api.route("/store/patterns/<int:id>", methods=['GET'])
 def get_pattern(id):
-    patterns = Patterns.query.get(id)
+    pattern = Patterns.query.get(id)
 
     if not pattern:
         return jsonify({'msg': 'Item not found!'})
@@ -250,7 +256,7 @@ def get_pattern(id):
 # LISTAR PRINT
 # ----------------
 
-@api.route("/store/<int:id>", methods=['GET'])
+@api.route("/store/prints/<int:id>", methods=['GET'])
 def get_one_print(id):
     one_print = Prints.query.get(id)
 
@@ -329,7 +335,7 @@ def change_avatar():
 # FAVORITES
 # ----------
 
-@api.route('/favorites', methods=['POST'])
+@api.route('/favorites', methods=['POST', 'GET'])
 @jwt_required()
 def add_to_favorites():
     current_user_id = get_jwt_identity()

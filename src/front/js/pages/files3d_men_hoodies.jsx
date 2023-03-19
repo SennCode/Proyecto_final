@@ -36,14 +36,14 @@ function Files3D_Men_Hoodies() {
                   file.gender == "Men" && file.type_clothes == "Hoodies" ? (
                     <div className="col-lg-3 col-md-4 col-6 my-2" key={i}>
                       <Link to={`/product_page/${file.id}`} key={file.id}>
-                        <div className="card card_gender_background card_gender_border container_foto">
+                        <div className="card card_gender_background card_gender_border container_foto card_img">
                           <img
                             src={file.url}
                             className="card-img-top "
                             alt="..."
                           />
                           <div className="card-body">
-                            <p className="card-text text-dark  text-truncate fs-6 fw-light">
+                            <p className="card-text text-dark text-truncate fs-6 fw-light mt-5">
                               {file.name}/{file.file_type}/{file.gender}
                             </p>
                           </div>

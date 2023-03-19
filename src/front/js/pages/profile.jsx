@@ -87,10 +87,12 @@ const Profile = () => {
   };
 
   const handleSave = () => {
+    const token = localStorage.getItem("access_token");
     fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify(user),
     })
@@ -98,15 +100,79 @@ const Profile = () => {
         if (response.ok) {
           setMessage("User updated successfully.");
           response.json().then((data) => setUser(data));
-          onClose();
+          
         } else {
           setMessage("An error occurred while updating the user.");
         }
       })
       .catch((error) => {
+        console.error(error);
         setMessage("An error occurred while updating the user.");
       });
   };
+
+  const handlePasswordSave = () => {
+    const newPassword = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+  
+    if (newPassword !== confirmPassword) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+  
+    const token = localStorage.getItem("access_token");
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ password: newPassword }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setMessage("Password updated successfully.");
+          onClose();
+        } else {
+          setMessage("An error occurred while updating the password.");
+        }
+      })
+      .catch((error) => {
+        setMessage("An error occurred while updating the password.");
+      });
+  };
+  
+  const handleDeleteUser = () => {
+    const confirmed = window.confirm("Are you sure you want to delete your account?");
+
+  if (!confirmed) {
+    return;
+  }
+  
+    const token = localStorage.getItem("access_token");
+    fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(user),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setMessage("User deleted successfully.");
+          localStorage.clear();
+          window.location.href = "/";
+        } else {
+          setMessage("An error occurred while deleting the user.");
+        }
+      })
+      .catch((error) => {
+        setMessage("An error occurred while deleting the user.");
+      });
+  };
+  
+  
 
   return (
     <>
@@ -187,6 +253,7 @@ const Profile = () => {
                   <button
                     type="button"
                     className="btn btn-danger mb-5 btn-sm me-2 col-lg-6 col-md-6"
+                    onClick={() => handleDeleteUser()}
                   >
                     Delete user
                   </button>{" "}
@@ -312,7 +379,7 @@ const Profile = () => {
                                 <input
                                   type="password"
                                   className="form-control"
-                                  id="floatingPassword"
+                                  id="confirm-password"
                                   placeholder="Current password"
                                   name="password"
                                 />
@@ -327,7 +394,7 @@ const Profile = () => {
                                 <input
                                   type="password"
                                   className="form-control"
-                                  id="floatingPassword"
+                                  id="new-password"
                                   placeholder="New password"
                                   name="password"
                                 />
@@ -342,7 +409,7 @@ const Profile = () => {
                             >
                               Close
                             </button>
-                            <button type="button" className="btn btn-primary">
+                            <button type="button" className="btn btn-primary" onClick={handlePasswordSave}>
                               Save
                             </button>
                           </div>

@@ -13,21 +13,6 @@ const ProductPage = () => {
   const [user, setUser] = useState({});
   const [detalle, setDetalle] = useState({});
   const [loader, setLoader] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const handleFavorite = async () => {
-    const product_type = "files3d"
-    const product_id = detalle.id
-
-    try {
-      const new_favorite = await actions.addFavorites(product_type, product_id);
-      setIsFavorite(true);
-      console.log(`Se ha agregado el producto ${product_id} a la lista de favoritos`);
-    } catch (error) {
-      console.error("Error al agregar el favorito", error);
-    }
-  };
-  
 
   setTimeout(() => {
     setLoader(false);
@@ -47,6 +32,8 @@ const ProductPage = () => {
       }
     };
     
+    console.log("username:", user);
+  
     fetchDetalle();
   }, [id, username]);
   
@@ -114,9 +101,14 @@ const ProductPage = () => {
                       >
                         Download
                       </button>
-                      <button onClick={handleFavorite} className="btn button border border-0 btn-lg me-1">
-        <i className={`fa fa-heart ${isFavorite ? "text-danger" : "text-muted"}`} />
-      </button>
+                      <button
+                        
+                        href="#"
+                        className="btn button border border-0 btn-lg me-1 "
+                      >
+                        
+                        <i className="fa fa-heart text-danger" />
+                      </button>
                     </div>
                     <div className="card-body avatar_padding"></div>
                   </div>
@@ -150,7 +142,13 @@ const ProductPage = () => {
 
             <div className="card mb-3">
               <div className="row g-0">
-                
+                <div className="col-lg-6 col-md-6">
+                  <img
+                    src={detalle.url}
+                    className="img-fluid rounded-start"
+                    alt="..."
+                  />
+                </div>
                 <div className="col-md-6">
                   <div className="card-body mt-3">
                     
@@ -187,9 +185,9 @@ const ProductPage = () => {
             <div className="card">
               <div className="row g-0 ">
                 <div className="col-lg-3 col-md-3 col-3 imgs_small">
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
-                  <img src={hoodie} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
+                  <img src={detalle.url} className="rounded img-fluid" alt="..." />
                 </div>
               </div>
             </div>
