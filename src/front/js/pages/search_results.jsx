@@ -23,7 +23,7 @@ function SearchResults() {
           <div className="loader">Loading...</div>
         </div>
       ) : (
-        <div className="container-fluid padindg_search_list p_card_gender">
+        <div className="container-fluid padindg_category_list p_card_gender">
           <p className="text-muted">Search results</p>
           <a
             className="arrow_category_list"
@@ -31,7 +31,7 @@ function SearchResults() {
           >
             <i className="fas fa-chevron-left mb-4 me-2"></i>Back
           </a>
-          <div className="row ">
+          <div className="row container">
             {store.search_results?.map((file, id) => {
               return(
                 <div className="col-lg-3 col-md-4 col-6 my-2" key={file.id}>

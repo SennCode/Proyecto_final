@@ -14,7 +14,7 @@
 
   
   .text-night {
-    color: white;
+    color: rgb(255, 255, 255);
     background-color: black;
   }
 
@@ -35,14 +35,29 @@ body.isNightMode button:not(.nocturno){
 }
 
 body.isNightMode nav {
-    background-color: #333;
+    background-color: #000000;
+    color: white;
+  }
+
+  body.isNightMode .search-night:hover{
+    background-color: rgb(255, 124, 2);
     color: white;
   }
 
   body.isNightMode .navbar-nav li a {
     color: white;
+    background-color: #000000;
+  }
+  body.isNightMode .background_user_dropdown{
+    background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));
+  }
+  body.isNightMode .color_night{
+    color: rgb(0, 0, 0);
   }
 
+  body.isNightMode .color_night:hover{
+    color: rgb(255, 124, 2);
+  }
   body.isNightMode .genders_titles {
     background:
       linear-gradient(
@@ -53,8 +68,8 @@ body.isNightMode nav {
       linear-gradient(
         to right,
         rgb(2, 2, 2),
-        rgba(55, 251, 104, 0.493),
-        rgb(2, 255, 57)
+        rgb(246, 143, 46),
+        rgb(255, 124, 2)
       );
     background-size: 100% 0.5px, 0 0.5px;
     background-position: 100% 100%, 0 100%;
@@ -77,3 +92,37 @@ body.isNightMode nav {
     height: 30px;
     width: 30px;
   }
+
+  body.isNightMode .arrow_category_list{
+    color: white;
+  }
+
+  body.isNightMode .arrow_category_list:hover{
+    color: rgb(255, 124, 2);
+  }
+
+  body.isNightMode .icon-footer:hover{
+    color: rgb(255, 124, 2);
+  }
+
+  body.isNightMode .hover-navbar:hover{
+    color: rgb(255, 124, 2);
+  }
+
+  body.isNightMode .modal-title#exampleModalLabel {
+    color: black;
+  }
+  
+  .modal-body form label.col-form-label[for="username"] {
+    color: red !important;
+    text-align: left !important;
+  }
+  
+  body.isNightMode .card{
+    background-color: white;
+  }
+  
+  body.isNightMode .text_product_page{
+    color: black;
+  }
+  

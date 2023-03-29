@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       search_results: [],
       favorites: [],
       navigate: null,
+      numero: 0,
     },
 
     actions: {
@@ -49,7 +50,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // ----------------
       // CREAR ARCHIVO 3D
       // ----------------
-
+      //ESTA FUNCION NO SE USA
       createFile3D: async (newFile3D) => {
         try {
           const token = localStorage.getItem("access_token");
@@ -77,6 +78,113 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      //ESTA SI SE USA
+      set3d: async (newFile3D,route) => {
+        console.log({newFile3D})
+        console.log(newFile3D.url)
+        console.log(newFile3D.url[0])
+
+        try {
+            const response = await fetch(`${config.HOSTNAME}/api/set_${route}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: newFile3D.name,
+                    category: newFile3D.category,
+                    description: newFile3D.description,
+                    file_type: newFile3D.file_type,
+                    gender: newFile3D.gender,
+                    url: newFile3D.files[0],
+                    type_clothes: newFile3D.type_clothes,
+                    size: newFile3D.size,
+                    user_id: newFile3D.user_id,
+                }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                console.log("ok");
+            } else {
+                throw new Error(data.msg);
+            }
+        } catch (error) {
+            throw error;
+        }
+    },
+      //pequeña prueba MILLAN SUBIDA ARCHIVO
+      // set3d: async (newFile3D) => {
+      //   console.log("esta entrando 3d");
+      //   const primero = "pru";
+      //   const segundo = "pru";
+      //   const tercero = "pru";
+      //   const cuarto = "pru";
+      //   const quinto = "pru";
+      //   const sexto = "pru";
+      //   const septimo = "pru";
+      //   const octavo = "pru";
+      //   const nueve = 15
+      //   try {
+      //     const response = await fetch(`${config.HOSTNAME}/api/set_file3d`, {
+      //       method: "POST",
+            
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({
+      //         name: primero,
+      //         category: segundo,
+      //         description: tercero,
+      //         fyle_type: cuarto,
+      //         gender:quinto,url:sexto,type_clothes:septimo,size:octavo,
+      //         user_id:nueve
+
+      //       }),
+      //     });
+      //     const data = await response.json();
+      //     if (response.ok) {
+      //       /*localStorage.setItem("access_token", data.access_token);
+      //       localStorage.setItem("user_id", data.user_id);
+      //       setStore({ access_token: data.access_token });
+      //       console.log(data.access_token);
+      //       return data;*/
+      //       console.log("ok");
+      //     } else {
+      //       throw new Error(data.msg);
+      //     }
+      //   } catch (error) {
+      //     throw error;
+      //   }
+      // },
+
+      setFavorite: async (favs) => {
+        console.log("esta entrando favs");
+        const primero = 1;
+        const segundo = 1;
+        const tercero = 1;
+        const cuarto = 1;
+        try {
+          const response = await fetch(`${config.HOSTNAME}/api/set_favorite`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: primero,
+              patterns_id: segundo,
+              files3d_id: tercero,
+              prints_id: cuarto,
+            }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            /*localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("user_id", data.user_id);
+            setStore({ access_token: data.access_token });
+            console.log(data.access_token);
+            return data;*/
+            console.log("ok");
+          } else {
+            throw new Error(data.msg);
+          }
+        } catch (error) {
+          throw error;
+        }
+      },
       // ----------------
       // REGISTRO USUARIO
       // ----------------
@@ -201,7 +309,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             localStorage.setItem("access_token", data.access_token);
             localStorage.setItem("user_id", data.user_id);
             setStore({ access_token: data.access_token });
-            console.log(data);
+            console.log(data.access_token);
             return data;
           } else {
             throw new Error(data.msg);
@@ -217,7 +325,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // ----------------
       // GET ARCHIVOS 3D
       // ----------------
-
+      
       getFiles3D: () => {
         fetch(`${config.HOSTNAME}/api/store`, {
           method: "GET",
@@ -231,6 +339,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((data) => {
             return setStore({ files3d: data.files3d });
           });
+      },
+
+      //GET ARCHIVO 3D UNICO PARA PRODUCT PAGE
+      setNumero: (num) => {
+        localStorage.setItem("category", num);
+      },
+      getNumero: () => {
+        const value = localStorage.getItem("category");
+        return value;
       },
 
       // ----------------

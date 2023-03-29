@@ -34,3 +34,9 @@
 .card{
   background-color: #d6d3d314;
 }
+
+.press {
+  color: red;
+  font-weight: bold;
+  transition: all 0.5s ease;
+}

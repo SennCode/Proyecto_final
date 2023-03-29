@@ -16,7 +16,7 @@ export const Navbar = () => {
   const { store, actions } = useContext(Context);
   const [loggedOut, setLoggedOut] = useState(false);
   const [isNightMode, setIsNightMode] = useState(false);
-
+  const url_id=["files3d","patterns","prints"]
   const navigate = useNavigate();
 
   const results = async (e) => {
@@ -35,32 +35,24 @@ export const Navbar = () => {
   };
 
   // DARK MODE
+  const darkmode=(isNightModep)=>{
+
+    localStorage.setItem("isNightMode", isNightModep);
+    isNightModep?document.body.classList.add("isNightMode"):document.body.classList.remove("isNightMode");
+    setIsNightMode(isNightModep)
+    console.log("hola")
+  }
   
-  useEffect(() => {
-    localStorage.setItem("isNightMode", isNightMode);
-  }, [isNightMode]);
-
-  useEffect(() => {
-    const storedIsNightMode = localStorage.getItem("isNightMode");
-    if (storedIsNightMode !== null) {
-      setIsNightMode(JSON.parse(storedIsNightMode));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isNightMode) {
-      document.body.classList.add("isNightMode");
-    } else {
-      document.body.classList.remove("isNightMode");
-    }
-  }, [isNightMode]);
 
   useEffect(() => {
     fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`)
       .then((res) => res.json())
 
-      .then((data) => setUser(data));
-  }, []);
+      .then((data) =>{ 
+      setUser(data);
+      console.log(data)});
+      
+  }, [isNightMode]);
 
   const changeState = (e) => {
     setSearch(e.target.value);
@@ -83,7 +75,7 @@ export const Navbar = () => {
       setLoggedOut(true);
     };
   };
-
+  
   return (
     <div className="container-fluid container-nav">
       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
@@ -113,7 +105,7 @@ export const Navbar = () => {
             <ul className="navbar-nav ms-auto me-5">
               <li className="nav-item ms-3">
                 <Link
-                  to="/files3d_category"
+                  to={`/${url_id[0]}`}
                   className=" hover-navbar"
                   onClick={handleLinkClick}
                 >
@@ -122,7 +114,7 @@ export const Navbar = () => {
               </li>
               <li className="nav-item ms-3">
                 <Link
-                  to="/patterns_category"
+                  to={`/${url_id[1]}`}
                   className=" hover-navbar"
                   onClick={handleLinkClick}
                 >
@@ -132,7 +124,7 @@ export const Navbar = () => {
 
               <li className="nav-item ms-3">
                 <Link
-                  to="/prints_category"
+                  to={`/${url_id[2]}`}
                   className=" hover-navbar"
                   onClick={handleLinkClick}
                 >
@@ -140,6 +132,14 @@ export const Navbar = () => {
                 </Link>
               </li>
             </ul>
+
+            <div><button
+              className="btn btn-dark btn-dark-mode btn-sm mt-2 ms-2"
+              onClick={() => darkmode(!isNightMode)}
+              style={{ borderRadius: "50%" }}
+            >
+              <i className={`fas ${isNightMode ? "fa-sun" : "fa-moon"}`}></i>
+            </button></div>
             {/* --- Search --- */}
             <form
               className="d-flex container-fluid mt-2"
@@ -153,23 +153,17 @@ export const Navbar = () => {
                 aria-label="Search"
                 onChange={changeState}
               />
-              <button className="btn btn-dark" type="submit">
+              <button className="btn btn-dark search-night" type="submit">
                 <i className="fa fa-search"></i>
               </button>
             </form>
-            <div><button
-              className="btn btn-dark btn-dark-mode btn-sm"
-              onClick={() => setIsNightMode(!isNightMode)}
-              style={{ borderRadius: "50%" }}
-            >
-              <i className={`fas ${isNightMode ? "fa-sun" : "fa-moon"}`}></i>
-            </button></div>
+            
             
 
             {/* DESPLEGABLE USUARIO */}
 
-            <div className="d-flex justify-content-end ">
-              <li className="nav-item dropdown d-flex justify-content-start container">
+            <div className="d-flex ">
+              <li className="nav-item dropdown d-flex mt-2">
                 <a
                   className="hover-navbar"
                   href="#"
@@ -189,12 +183,12 @@ export const Navbar = () => {
                     <i className="far fa-user-circle fa-2x me-5 mt-3 mb-3 hover-navbar" />
                   )}
                 </a>
-                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end background_user_dropdown">
+                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end background_user_dropdown mt-3">
                   {localStorage.getItem("access_token") ? (
                     <>
                       <li>
                         <button
-                          className="dropdown-item dropdown-item-backgorund"
+                          className="dropdown-item dropdown-item-backgorund color_night"
                           onClick={() => navigate("/profile")}
                         >
                           My profile
@@ -203,7 +197,7 @@ export const Navbar = () => {
                       </li>
                       <li>
                         <button
-                          className="dropdown-item dropdown-item-backgorund"
+                          className="dropdown-item dropdown-item-backgorund color_night"
                           onClick={() => navigate("/favorites")}
                         >
                           Favorites
@@ -216,7 +210,7 @@ export const Navbar = () => {
                       </li>
                       <li>
                         <button
-                          className="dropdown-item dropdown-item-backgorund"
+                          className="dropdown-item dropdown-item-backgorund color_night"
                           onClick={() => {
                             localStorage.removeItem("access_token");
                             localStorage.removeItem("user_id");
@@ -233,7 +227,7 @@ export const Navbar = () => {
                       <li>
                         <Link
                           to="/login"
-                          className="dropdown-item dropdown-item-backgorund"
+                          className="dropdown-item dropdown-item-backgorund color_night"
                         >
                           Login
                           <i className="fas ms-2 fa-sign-in-alt"></i>
@@ -242,7 +236,7 @@ export const Navbar = () => {
                       <li>
                         <Link
                           to="/register_user"
-                          className="dropdown-item dropdown-item-backgorund"
+                          className="dropdown-item dropdown-item-backgorund color_night"
                         >
                           Register
                         </Link>

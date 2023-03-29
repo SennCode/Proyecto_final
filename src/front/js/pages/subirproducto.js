@@ -3,7 +3,7 @@ import "/workspace/react-flask-hello/src/front/styles/upload_product.css";
 import { Context } from "../store/appContext.js";
 import config from "../store/config.js";
 
-function UploadProduct() {
+function UploadProduct2() {
   const { store, actions } = useContext(Context);
   const [ bool, setBool] = useState(false)
   const [newFile3D, setNewFile3D] = useState({
@@ -16,18 +16,17 @@ function UploadProduct() {
     files: [],
     type_clothes: "",
     size: "",
-    user_id:JSON.parse(localStorage.getItem("user_id")),
   });
 
   const sendImage = () => {
-    console.log("Enviando objeto")
+    
     const fileInput = document.getElementById("formFileMultiple");
     const files = Array.from(fileInput.files);
     files.forEach((file) => {
      
       const body = new FormData();
     body.append("archivo", file);
-    console.log({body})
+    
     fetch(`${config.HOSTNAME}/api/upload`, {
       method: "POST",
       body: body,
@@ -65,30 +64,10 @@ function UploadProduct() {
     const inputValue = e.target.value;
     setNewFile3D((prevState) => ({ ...prevState, [inputName]: inputValue }));
   };
-  //FUNCION QUE FALTA POR FUNCIONAR, PROBLEMA CON EL REQUEST BODY
-  const subirarchivo = () => {
-    if(newFile3D.category==="3Dfiles") {
-      console.log("esto es files3d");
-      actions.set3d(newFile3D,"file3d");
-    }
-    else if(newFile3D.category==="Patterns"){
-      console.log("esto es patterns");
-      actions.set3d(newFile3D,"pattern")
-    }
-    else if(newFile3D.category==="Prints"){
-      console.log("esto es prints");
-      actions.set3d(newFile3D,"print")
-    }
-  };
-  //
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("cuando se esta llamando esta funcion")
     sendImage()
-    console.log(newFile3D)
-    subirarchivo();
-    
-    //subirarchivo();
   //  if ( ) {
   //   console.log(newFile3D)
   //   actions.createFile3D(newFile3D)}
@@ -195,10 +174,10 @@ function UploadProduct() {
   const typeClothesOptions = getTypeClothesOptions();
 
   return (
-    <div className="container-fluid container_uploadProduct">
+    <div className="container-fluid container_2">
       <div className="row">
         <div className="col-lg-12">
-          <h3 className="pb-3 text-decoration-underline">Upload file</h3>
+          <h2 className="pb-3 h3-upload">Upload file</h2>
           {/* -- Category -- */}
           <select
             className="form-select form-select-sm borders_upload"
@@ -349,7 +328,7 @@ function UploadProduct() {
             <button
               onClick={handleSubmit}
               type="button"
-              className="btn btn-primary btn-block mb-5 text_product_page btn-sm mt-4
+              className="btn button_product_page btn-block mb-5 text_product_page btn-sm mt-4
                 "
             >
               Upload file
@@ -361,4 +340,4 @@ function UploadProduct() {
   );
 }
 
-export default UploadProduct;
+export default UploadProduct2;

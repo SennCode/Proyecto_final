@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
 import patron from "/workspace/react-flask-hello/src/front/img/muestraPatron.png";
@@ -35,7 +35,7 @@ function Patterns_Men_Tshirts() {
                       <Link to={`/product_page/${file.id}`} key={file.id}>
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img
-                            src={patron}
+                            src={file.url}
                             className="card-img-top"
                             alt="..."
                           />

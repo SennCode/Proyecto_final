@@ -27,7 +27,7 @@ function Prints_Women_Geometric() {
           >
             <i className="fas fa-chevron-left mb-4 me-2"></i>Back
           </a>
-          <div className="row ">
+          <div className="row">
             {store.prints.length
               ? store.prints.map((file, id) =>
               file.gender == "Men" && file.type_clothes == "Geometric" ? (

@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./pages/home";
+import Category from "./component/category";
+import Pageprops2 from "./component/pageprops2";
 import Files3d_category from "./pages/files3d_category.jsx";
 import Patterns_category from "./pages/patterns_category.jsx";
 import Prints_category from "./pages/prints_category.jsx";
@@ -66,6 +68,9 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
+            <Route element={<Category />} path="/:category" />
+            <Route element={<Pageprops2 />} path="/:category/:gender/:type_clothes" />
+            <Route element={<ProductPage />} path="/product_page/:category/:id" />
             <Route element={<FavoriteList />} path="/favorites" />
             <Route element={<Profile />} path="/profile" />
             <Route element={<SearchResults />} path="/search_results/:query" />
@@ -169,7 +174,7 @@ const Layout = () => {
             <Route element={<Patterns_category />} path="/patterns_category" />
             <Route element={<Files3d_category />} path="/files3d_category" />
             <Route element={<UploadProduct />} path="/upload_product" />
-            <Route element={<ProductPage />} path="/product_page/:id" />
+            
             <Route element={<Create_user />} path="/register_user" />
             <Route element={<Login />} path="/login" />
             <Route element={<Single />} path="/single/:theid" />

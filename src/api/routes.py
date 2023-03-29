@@ -85,12 +85,69 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if user and bcrypt.check_password_hash(user.password, password):
+        #access_token = create_access_token(identity=user.serialize())
         access_token = create_access_token(identity=user.id)
         
         return jsonify({"access_token": access_token, "user_id": user.id}), 200
 
     else:
         return jsonify({"msg": "wrong email or password!"}), 400
+        
+
+@api.route('/login2', methods=['POST'])
+def login2():
+    body = request.get_json()
+
+    email = body.get('email')
+    password = body.get('password')
+    # validar q' email & password != NONE
+
+    users = User.query.filter_by(email=email).all()
+    if (len(users)==0):
+        return jsonify({"msg":"El usuario con email:" + email + " no existe.","data": None}),201
+    
+    user = users[0]
+    hash = user.password
+    isValid = bcrypt.check_password_hash(hash, password)
+    if not isValid:
+        return jsonify({"msg":"Clave incorrecta.","data":None}), 201
+
+    token = create_access_token(identity={"rol": "usuario", "data": user.serialize()})
+    return jsonify({"msg": None,"data":token}), 200
+
+
+#
+# CAMBIAR LA CONTRASEÑA, FALTA METER COMPROBACION DE TIPO DE CONTRASEÑA?
+#
+@api.route("/password_change", methods=["PUT"])
+@jwt_required()
+def password_change():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    password = request.json.get("password", None)
+    confirm_password = request.json.get("confirm_password", None)
+    new_password = request.json.get("new_password",None)
+    
+    if len(new_password)<4 :
+        return jsonify("contraseña no valida"),201
+    #user = User.query.filter_by(email=email).first()
+
+    if user and bcrypt.check_password_hash(user.password, password) and password==confirm_password:
+        #access_token = create_access_token(identity=user.serialize())
+        new_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        access_token = create_access_token(identity=user.id)
+        user.password= new_password
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(user.serialize()), 200
+        #return jsonify({"access_token": access_token, "user_id": user.id}), 200
+    else:
+        return jsonify("NADA")
+    return jsonify(user.serialize()), 201
+#
+#
+#
 
 # ------------
 # PRIVATE
@@ -104,6 +161,17 @@ def private():
 
     return jsonify(user.serialize()), 200
     
+@api.route('/private2', methods=['GET'])
+@jwt_required()
+def private2():
+    data = get_jwt_identity()
+    print(data)
+    return jsonify(data),200
+    #users=User.query.all()
+    #result=[]
+    #for user in users:
+    #    if user.password==
+
         
 # ---------------------
 # Buscar usuario por id
@@ -154,14 +222,14 @@ def update_user(id):
     if username and User.query.filter_by(username=username).first():
         return jsonify({'msg': 'Invalid username'}), 400
 
-    # Verificar que la contraseña proporcionada sea válida
-    password = request.json.get("password")
-    if password and len(password) < 8:
-        return jsonify({'msg': 'Invalid password'}), 400
+    # # Verificar que la contraseña proporcionada sea válida
+    # password = request.json.get("password")
+    # if password and len(password) < 8:
+    #     return jsonify({'msg': 'Invalid password'}), 400
 
     # Actualizar la información del usuario
     user.username = username or user.username
-    user.password = bcrypt.generate_password_hash(password).decode('utf-8') if password else user.password
+    # user.password = bcrypt.generate_password_hash(password).decode('utf-8') if password else user.password
 
     db.session.commit()
 
@@ -230,14 +298,20 @@ def search(search):
 # LISTAR ARCHIVO3D
 # ----------------
 
-@api.route("/store/<int:id>", methods=['GET'])
-def get_file3d(id):
+@api.route("/store/<category>/<int:id>", methods=['GET'])
+def get_file3d(id,category):
     file3d = Files3D.query.get(id)
+    pattern = Patterns.query.get(id)
+    printo = Prints.query.get(id)
 
-    if not file3d:
-        return jsonify({'msg': 'Item not found!'})
-
-    return jsonify(file3d.serialize())
+    
+    if category == "files3d":
+        return jsonify(file3d.serialize())
+    if category == "patterns":
+        return jsonify(pattern.serialize())
+    if category == "prints":
+        return jsonify(printo.serialize())
+    
 
 # ----------------
 # LISTAR PATTERN
@@ -292,12 +366,115 @@ def create_file():
 
     return jsonify({"msg": 'File created successfully!'}), 201
 
+#
+# CREAR FILES3D
+#
+@api.route("/set_file3d", methods=["POST"])
+def set_file3d():
+
+    #body = request.get_json()
+    #name = "pr"#body.get('name')
+    #category = "pr"#body.get('category')
+    #description = "pr"#body.get('description')
+    #file_type = "pr"#body.get('file_type')
+    #gender = "pr"#body.get('gender')
+    #url = "pr"#body.get('url')
+    #type_clothes ="pr" #body.get('type_clothes')
+    #size = "pr"#body.get('size')
+    #user_id = 15#body.get('user_id')
+
+    name = request.json['name']
+    category = request.json['category']
+    description = request.json['description']
+    file_type = request.json['file_type']
+    gender = request.json['gender']
+    url = request.json['url']
+    type_clothes = request.json['type_clothes']
+    size = request.json['size']
+    user_id = request.json['user_id']
+
+    file3d = Files3D(
+        name = name,
+        category = category,
+        description = description,
+        file_type = file_type,
+        gender = gender,
+        url = url,
+        type_clothes = type_clothes,
+        size = size,
+        user_id = user_id,
+    )
+
+    db.session.add(file3d)
+    db.session.commit()
+    return jsonify({"msg":"Files3d creado" ,"data":None})
+
+
+#
+# CREAR PATTERNS
+#
+@api.route("/set_pattern", methods=["POST"])
+def set_pattern():
+    name = request.json['name']
+    description = request.json['description']
+    file_type = request.json['file_type']
+    gender = request.json['gender']
+    url = request.json['url']
+    type_clothes = request.json['type_clothes']
+    size = request.json['size']
+    user_id = request.json['user_id']
+
+    pattern = Patterns(
+        name = name,
+        description = description,
+        file_type = file_type,
+        gender = gender,
+        url = url,
+        type_clothes = type_clothes,
+        size = size,
+        user_id = user_id,
+    )
+
+    db.session.add(pattern)
+    db.session.commit()
+    return jsonify({"msg":"Pattern creado" ,"data":None})
+
+#
+# CREAR PRINTS
+#
+@api.route("/set_print", methods=["POST"])
+def set_print():
+    name = request.json['name']
+    description = request.json['description']
+    file_type = request.json['file_type']
+    gender = request.json['gender']
+    url = request.json['url']
+    type_clothes = request.json['type_clothes']
+    #size = request.json['size']
+    user_id = request.json['user_id']
+
+    printo = Prints(
+        name = name,
+        description = description,
+        file_type = file_type,
+        gender = gender,
+        url = url,
+        type_print = type_clothes,
+        
+        user_id = user_id,
+    )
+
+    db.session.add(printo)
+    db.session.commit()
+    return jsonify({"msg":"Print creado" ,"data":None})
 # ----------
 # cloudinary
 # ----------
 @api.route("/upload", methods=["POST"])
 def upload_image():
+    print("hola desde el back")
     archivo = request.files.get('archivo')
+    print(archivo)
     if archivo:
         data = cloudinary.uploader.upload(archivo)
         url_image = data["secure_url"]
@@ -334,7 +511,7 @@ def change_avatar():
 # ----------
 # FAVORITES
 # ----------
-
+#ESTA NO ES LA QUE USAMOS
 @api.route('/favorites', methods=['POST', 'GET'])
 @jwt_required()
 def add_to_favorites():
@@ -363,3 +540,74 @@ def add_to_favorites():
     db.session.commit()
 
     return jsonify({"msg": "New favorite created!!"}), 201
+#USAMOS LAS SIGUIENTES DOS FUNCIONES
+@api.route('/get_favorites', methods=['GET'])
+@jwt_required()
+def get_favorites():
+    current_user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
+
+    favorites=Favorites.query.filter_by(user_id=user.id)
+    result=[]
+    products=[]
+    for favorite in favorites:
+        if(favorite.files3d_id!=1):
+             #or favorite.patterns_id!=1 or favorite.prints_id!=1):
+            fav=Files3D.query.filter_by(id=favorite.files3d_id)
+            result.append(favorite.serialize())
+
+            product=Files3D.query.get(favorite.files3d_id)
+            products.append(product.serialize())
+
+        elif(favorite.patterns_id!=1):    
+
+            fav=Patterns.query.filter_by(id=favorite.patterns_id)
+            result.append(favorite.serialize())
+           
+            product=Patterns.query.get(favorite.patterns_id)
+            products.append(product.serialize())
+
+        elif(favorite.prints_id!=1):
+
+            fav=Prints.query.filter_by(id=favorite.prints_id)
+            result.append(favorite.serialize())
+
+            product=Prints.query.get(favorite.prints_id)
+            products.append(product.serialize())
+        
+    
+
+    return jsonify({"fav_products":products}), 200
+
+@api.route('/set_favorite', methods=['POST'])
+@jwt_required()
+def set_favorite():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    #current_user_id = get_jwt_identity()
+    #user = User.query.filter_by(id=current_user_id).first()
+
+    # Obtener los datos del producto que se quiere agregar a favoritos
+    #user_id = request.json['user_id']
+    files3d_id = request.json['files3d_id']
+    patterns_id = request.json['patterns_id']
+    prints_id = request.json['prints_id']
+
+    # Validar que los datos sean correctos
+    #if product_type not in ['files3d', 'patterns', 'prints']:
+    #    abort(400, 'Invalid product type')
+
+    # Crear un objeto Favorites y guardarlo en la base de datos
+    #favorite = Favorites(user_id=user.id)
+    favorite = Favorites(user_id=user.id,files3d_id=files3d_id, patterns_id=patterns_id,prints_id=prints_id)
+    #if product_type == 'files3d':
+    #    favorite.files3d_id = product_id
+    #elif product_type == 'patterns':
+    #    favorite.patterns_id = product_id
+    #else:
+    #    favorite.prints_id = product_id
+
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({"msg": favorite.serialize(),"data":user.id}), 200

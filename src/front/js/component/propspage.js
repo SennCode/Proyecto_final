@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
-import patron from "/workspace/react-flask-hello/src/front/img/muestraPatron.png";
 import "/workspace/react-flask-hello/src/front/styles/category_list.css";
 import config2 from "../store/config2.js";
 
-function Patterns_Men_Hoodies() {
+const Propspage =(props)=> {
   const { store, actions } = useContext(Context);
   const [loader, setLoader] = useState(true);
 
@@ -19,23 +18,25 @@ function Patterns_Men_Hoodies() {
           <div className="loader">Loading...</div>
         </div>
       ) : (
-        <div className="container-fluid padindg_category_list p_card_gender">
-          <p className="text-muted">Patterns / Men / hoodies</p>
+        <div className="container-fluid padindg_category_list p_card_gender ">
+            <p className="text-muted">{props.ruta}</p>
           <a
             className="arrow_category_list"
-            href={`${config2.HOSTNAME}/patterns_category`}
+            href={`${config2.HOSTNAME}/${props.url}`}
+
           >
             <i className="fas fa-chevron-left mb-4 me-2"></i>Back
           </a>
           <div className="row ">
-            {store.patterns.length
-              ? store.patterns.map((file, id) =>
-                  file.gender == "Men" && file.type_clothes == "Hoodies" ? (
+            {store.props.array.length
+              ? store.props.map((file, id) =>
+                  file.gender == "Children" &&
+                  file.type_clothes == "Hoodies" ? (
                     <div className="col-lg-3 col-md-4 col-6 my-2" key={file.id}>
                       <Link to={`/product_page/${file.id}`} key={file.id}>
                         <div className="card card_gender_background card_gender_border container_foto">
                           <img
-                            src={user.img}
+                            src="https://res.cloudinary.com/dwssfgyty/image/upload/v1676451087/ueb7xb10s0sqe7jjcazv.png"
                             className="card-img-top"
                             alt="..."
                           />
@@ -59,4 +60,4 @@ function Patterns_Men_Hoodies() {
   );
 }
 
-export default Patterns_Men_Hoodies;
+export default Propspage;

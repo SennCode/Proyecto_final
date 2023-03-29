@@ -44,7 +44,7 @@ function Files3D_Men_Hoodies() {
                           />
                           <div className="card-body">
                             <p className="card-text text-dark text-truncate fs-6 fw-light mt-5">
-                              {file.name}/{file.file_type}/{file.gender}
+                              {file.name} / {file.gender}
                             </p>
                           </div>
                         </div>

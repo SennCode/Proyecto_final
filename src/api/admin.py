@@ -14,6 +14,7 @@ def setup_admin(app):
     admin.add_view(ModelView(Files3D, db.session))
     admin.add_view(ModelView(Patterns, db.session))
     admin.add_view(ModelView(Prints, db.session))
+    admin.add_view(ModelView(Favorites, db.session))
    
     
 

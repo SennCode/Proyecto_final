@@ -1,5 +1,9 @@
 .cards_height{
-  height: 200px;
+  height: 300px;
+}
+.img_height{
+  height:270px;
+  object-fit: content;
 }
 .padindg_category_list{
     padding: 5% 2%;
@@ -8,6 +12,7 @@
     -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
     padding-top: 5%;
+    padding-left: 15% !important;
 }
 
 .arrow_category_list{
@@ -28,9 +33,9 @@ color: rgb(171, 28, 238);
     ),
     linear-gradient(
       to right,
-      rgb(255, 85, 0),
-      rgba(255, 0, 180, 1),
-      rgba(0, 100, 200, 1)
+      rgba(182, 95, 236, 0.917),
+      rgb(133, 64, 243),
+      rgba(81, 1, 202, 0.917)
   );
   background-size: 100% 0.5px, 0 0.5px;
   background-position: 100% 100%, 0 100%;

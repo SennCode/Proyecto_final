@@ -9,14 +9,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    username = db.Column(db.String(20), unique=False, nullable=False)
     img = db.Column(db.String(120), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(False), unique=False, nullable=False)
-    files3d = db.relationship('Files3D', backref='user')
-    patterns = db.relationship('Patterns', backref='user')
-    prints = db.relationship('Prints', backref='user')
 
     def __repr__(self):
         return f'{self.username}'
@@ -36,14 +33,15 @@ class Files3D(db.Model):
     __tablename__ = "files3d"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
-    category = db.Column(db.String(120), unique=False, nullable=True)
+    category = db.Column(db.String(120), unique=False, nullable=False)
     description = db.Column(db.String(300), unique=False, nullable=False)
     file_type = db.Column(db.String(20), unique=False, nullable=False)
-    gender = db.Column(db.String(10), unique=False, nullable=True)
-    url = db.Column(db.String(300), unique=False, nullable=True)
+    gender = db.Column(db.String(10), unique=False, nullable=False)
+    url = db.Column(db.String(300), unique=False, nullable=False)
     type_clothes = db.Column(db.String(30), unique=False, nullable=False)
     size = db.Column(db.String(20), unique=False, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
     def __repr__(self):
         return self.name
@@ -52,13 +50,18 @@ class Files3D(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "category": self.category,
+            "category": "files3d",
             "description": self.description,
             "file_type": self.file_type,
             "gender": self.gender,
             "url": self.url,
             "type_clothes": self.type_clothes,
-            "size": self.size
+            "size": self.size,
+            "user_id":self.user_id,
+            "username": self.user.username,
+            "user_img": self.user.img,
+            "number":1,
+
         }
 
 # Tabla Patterns
@@ -66,14 +69,15 @@ class Files3D(db.Model):
 class Patterns(db.Model):
     __tablename__ = "patterns"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(300), unique=True, nullable=False)
-    file_type = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    description = db.Column(db.String(300), unique=False, nullable=False)
+    file_type = db.Column(db.String(20), unique=False, nullable=False)
     gender = db.Column(db.String(10), unique=False, nullable=True)
     url = db.Column(db.String(300), unique=False, nullable=True)
     type_clothes = db.Column(db.String(30), unique=False, nullable=True)
-    size = db.Column(db.String(20), unique=True, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    size = db.Column(db.String(20), unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
     def serialize(self):
         return {
@@ -84,7 +88,12 @@ class Patterns(db.Model):
             "gender": self.gender,
             "url": self.url,
             "type_clothes": self.type_clothes,
-            "size": self.size
+            "size": self.size,
+            "user_id":self.user_id,
+             "username": self.user.username,
+            "user_img": self.user.img,
+            "number":2,
+            "category":"patterns"
         }
 
         # Tabla Prints
@@ -92,13 +101,14 @@ class Patterns(db.Model):
 class Prints(db.Model):
     __tablename__ = "prints"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(300), unique=True, nullable=False)
-    file_type = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    description = db.Column(db.String(300), unique=False, nullable=False)
+    file_type = db.Column(db.String(20), unique=False, nullable=False)
     gender = db.Column(db.String(10), unique=False, nullable=True)
     url = db.Column(db.String(300), unique=False, nullable=True)
     type_print = db.Column(db.String(30), unique=False, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
     def serialize(self):
         return {
@@ -108,7 +118,12 @@ class Prints(db.Model):
             "file_type": self.file_type,
             "gender": self.gender,
             "url": self.url,
-            "type_clothes": self.type_clothes,
+            "type_clothes": self.type_print,
+            "user_id":self.user_id,
+            "username": self.user.username,
+            "user_img": self.user.img,
+            "number":3,
+            "category":"prints"
         }
 
 # REALACIONES PARA:
@@ -189,11 +204,45 @@ class Favorites(db.Model):
     patterns_id = db.Column(db.Integer, db.ForeignKey('patterns.id'), nullable=False, unique=False)
     prints_id = db.Column(db.Integer, db.ForeignKey('prints.id'), nullable=False, unique=False)
 
+    user = db.relationship(User)
+    files3d = db.relationship(Files3D)
+    patterns = db.relationship(Patterns)
+    prints = db.relationship(Prints)
+
     def serialize(self):
-        return{
-            "id": self.id,
-            "user_id": self.id,
-            "files3d_id": self.files3d_id,
-            "patterns_id": self.patterns_id,
-            "prints_id": self.prints_id
-        }
+        #usamos el valor 1 como null, ya que nos da error con el valor null la base de datos
+        
+        if(self.files3d_id==1 and self.patterns_id==1 and self.prints_id==1 ):
+            pass
+        elif(self.files3d_id==1 and self.patterns_id==1 ):
+            return{
+                "id": self.id,
+                "user_id": self.user_id,
+                #"files3d_id": "nada",
+                #"patterns_id": "nada",
+                "prints_id": self.prints_id
+            }
+        elif(self.files3d_id==1 and self.prints_id==1):
+            return{
+                "id": self.id,
+                "user_id": self.user_id,
+                #"files3d_id": "nada",
+                "patterns_id": self.patterns_id,
+                #"prints_id": "nada"
+            }
+        elif(self.patterns_id==1 and self.prints_id==1):
+            return{
+                "id": self.id,
+                "user_id": self.user_id,
+                "files3d_id": self.files3d_id,
+                #"patterns_id": "nada",
+                #"prints_id": "nada"
+            }
+        else:
+            return{
+                    "id": self.id,
+                    "user_id": self.user_id,
+                    "files3d_id": self.files3d_id,
+                    "patterns_id": self.patterns_id,
+                    "prints_id": self.prints_id
+                }
