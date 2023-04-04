@@ -44,14 +44,14 @@ function FavoriteList() {
             className="arrow_category_list"
             to={`/profile`}
           >
-            <i className="fas fa-chevron-left mb-4 me-2"></i>Back
+           <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
           </Link>
           <div className="row ">
             {fav_products.map((file, id) => {
               return(
                 <Card_cat 
                         src={file.url}
-                        name={file.type_clothes}
+                        name={file.name}
                         type={file.file_type}
                         type_clothes={file.type_clothes?file.type_clothes:file.type_prints}
                         file_number={file.number}

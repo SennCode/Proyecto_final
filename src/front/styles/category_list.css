@@ -6,13 +6,13 @@
   object-fit: content;
 }
 .padindg_category_list{
-    padding: 5% 2%;
+    padding: 5% 10%;
     font-family: 'DM Sans', sans-serif;
     font-size: 1.2rem;
     -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
     padding-top: 5%;
-    padding-left: 15% !important;
+    
 }
 
 .arrow_category_list{

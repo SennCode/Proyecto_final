@@ -29,7 +29,13 @@ export const Navbar = () => {
       .then((data) => {
         setFiles(data);
         console.log(data);
-        actions.set_search_results(data.files3d);
+        const auxFiles3d=[...data.files3d]
+        const auxPatterns=[...data.patterns]
+        const auxPrints=[...data.prints]
+        const result=auxFiles3d.concat(auxPatterns, auxPrints)
+        console.log(result)
+        actions.set_search_results(result);
+        console.log(store.search_results)
         navigate(`/search_results/${search}`);
       });
   };

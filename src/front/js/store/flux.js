@@ -94,7 +94,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                     description: newFile3D.description,
                     file_type: newFile3D.file_type,
                     gender: newFile3D.gender,
-                    url: newFile3D.files[0],
+                    url: newFile3D.url[0].url_image,
+                    //url: newFile3D.files[0],
                     type_clothes: newFile3D.type_clothes,
                     size: newFile3D.size,
                     user_id: newFile3D.user_id,
@@ -103,6 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             const data = await response.json();
             if (response.ok) {
                 console.log("ok");
+                
             } else {
                 throw new Error(data.msg);
             }

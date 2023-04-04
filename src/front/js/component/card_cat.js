@@ -20,8 +20,8 @@ const Card_cat=(props)=>{
             
               <div className="card card_gender_background card_gender_border container_foto card_height">
               <div className="card-body d-flex">
-                  <p className="card-text text-dark">{name}</p>
-                  <p className="card-text text-dark">{type}</p>
+                  <p className="card-text text-dark text-truncate">{name}</p>
+                  
                 </div>
               <img
                   src={img}

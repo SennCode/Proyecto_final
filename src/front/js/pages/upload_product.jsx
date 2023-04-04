@@ -2,10 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import "/workspace/react-flask-hello/src/front/styles/upload_product.css";
 import { Context } from "../store/appContext.js";
 import config from "../store/config.js";
+import { useNavigate } from "react-router-dom";
+import { Modal, Button } from 'react-bootstrap';
 
 function UploadProduct() {
+  const navigate=useNavigate()
   const { store, actions } = useContext(Context);
   const [ bool, setBool] = useState(false)
+  const [cuenta,setCuenta]=useState(0)
   const [newFile3D, setNewFile3D] = useState({
     category: "",
     name: "",
@@ -18,6 +22,14 @@ function UploadProduct() {
     size: "",
     user_id:JSON.parse(localStorage.getItem("user_id")),
   });
+
+  const [showModal, setShowModal] = useState(false);
+
+  function handleModalClose() {
+    setShowModal(false);
+    navigate("/profile");
+  }
+
 
   const sendImage = () => {
     console.log("Enviando objeto")
@@ -86,25 +98,15 @@ function UploadProduct() {
     console.log("cuando se esta llamando esta funcion")
     sendImage()
     console.log(newFile3D)
-    subirarchivo();
-    
     //subirarchivo();
-  //  if ( ) {
-  //   console.log(newFile3D)
-  //   actions.createFile3D(newFile3D)}
-    // const urls = files.map(
-    //   (file) => `${config.HOSTNAME}/api/upload/${file.name}`
-    // );
-    
-    // const newFile3DWithUrl = {
-    //   ...newFile3D,
-    //   url: urls,
-    // };
-    // console.log(newFile3D)
-    // actions.createFile3D(newFile3D);
+    setShowModal(true);
   };
 
   useEffect(() => {
+    console.log(cuenta)
+    setCuenta(cuenta+1)
+    //cuenta===2?console.log(newFile3D.url[0].url_image):""
+    cuenta===2?subirarchivo():""
     console.log(newFile3D)
     const fileInput = document.getElementById("formFileMultiple")
     const files = Array.from(fileInput.files)
@@ -114,6 +116,7 @@ function UploadProduct() {
       ...newFile3D,
       url: [],
     });
+    cuenta===2?setCuenta(0):""
     setBool(false)
   }
     
@@ -127,7 +130,7 @@ function UploadProduct() {
       return (
         <>
           <option value="Hoodies">Hoodies</option>
-          <option value="T-Shirts">T-Shirt</option>
+          <option value="T-shirts">T-shirts</option>
           <option value="Trousers">Trousers</option>
         </>
       );
@@ -149,7 +152,7 @@ function UploadProduct() {
       return (
         <>
           <option value="Hoodies">Hoodies</option>
-          <option value="T-Shirts">T-Shirts</option>
+          <option value="T-shirts">T-shirts</option>
           <option value="Trousers">Trousers</option>
         </>
       );
@@ -346,16 +349,26 @@ function UploadProduct() {
 
         <div className="row">
           <div className="col-lg-2">
-            <button
-              onClick={handleSubmit}
-              type="button"
-              className="btn btn-primary btn-block mb-5 text_product_page btn-sm mt-4
-                "
-            >
-              Upload file
-            </button>
-          </div>
-        </div>
+          <button onClick={handleSubmit} type="button" className="btn btn-primary btn-block mb-5 text_product_page btn-sm mt-4" data-bs-toggle="modal" data-bs-target="#myModal">
+  Upload file
+</button>
+
+<Modal show={showModal} onHide={() => setShowModal(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title className="modal-night">Upload Successful</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <p className="modal-night">Your file has been uploaded successfully!</p>
+  </Modal.Body>
+  <Modal.Footer>
+  <Button className="modal-night-btn" variant="secondary" onClick={handleModalClose}>
+
+      Go to your profile
+    </Button>
+  </Modal.Footer>
+</Modal> 
+</div>
+</div>
       </div>
     </div>
   );

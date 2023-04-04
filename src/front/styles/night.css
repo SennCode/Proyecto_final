@@ -69,7 +69,7 @@ body.isNightMode nav {
         to right,
         rgb(2, 2, 2),
         rgb(246, 143, 46),
-        rgb(255, 124, 2)
+        rgb(255, 82, 2)
       );
     background-size: 100% 0.5px, 0 0.5px;
     background-position: 100% 100%, 0 100%;
@@ -114,7 +114,20 @@ body.isNightMode nav {
   }
   
   .modal-body form label.col-form-label[for="username"] {
-    color: red !important;
+    color: rgb(0, 0, 0) !important;
+    text-align: left !important;
+  }
+
+  .modal-body form label.col-form-label[for="confirm_password-input"] {
+    color: rgb(0, 0, 0) !important;
+    text-align: left !important;
+  }
+  .modal-body form label.col-form-label[for="new_password-input"] {
+    color: rgb(0, 0, 0) !important;
+    text-align: left !important;
+  }
+  .modal-body form label.col-form-label[for="password-input"] {
+    color: rgb(0, 0, 0) !important;
     text-align: left !important;
   }
   
@@ -126,3 +139,32 @@ body.isNightMode nav {
     color: black;
   }
   
+  body.isNightMode .text-dark-card-night{
+    color: black;
+  }
+
+  body.isNightMode .btn-danger-night{
+    background-color: red !important; 
+  }
+
+  body.isNightMode .btn-orange-night{
+    background-color: rgb(119, 121, 121) !important; 
+  }
+
+  body.isNightMode .text-btn-profile{
+    color: white !important;
+  }
+
+  body.isNightMode .btn-download-night{
+    background-color: rgb(255, 111, 0) !important;
+    border-color: #000000 !important;
+  }
+
+  body.isNightMode  .modal-night{
+    color: #000000 !important;
+  }
+
+  body.isNightMode .modal-night-btn{
+    color: #ffffff !important;
+    background-color: rgb(0, 0, 0) !important;
+  }

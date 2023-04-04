@@ -4,6 +4,7 @@ import "/workspace/react-flask-hello/src/front/styles/category_list.css";
 import config2 from "../store/config2.js";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import Card_cat from "../component/card_cat.js";
 
 function SearchResults() {
   const { store, action } = useContext(Context);
@@ -11,6 +12,7 @@ function SearchResults() {
   const { query } = useParams();
 
   useEffect(() => {
+    console.log(store.search_results)
     setTimeout(() => {
       setLoader(false);
     }, 1000);
@@ -33,24 +35,22 @@ function SearchResults() {
           </a>
           <div className="row container">
             {store.search_results?.map((file, id) => {
-              return(
-                <div className="col-lg-3 col-md-4 col-6 my-2" key={file.id}>
-              <Link to={`/product_page/${file.id}`} key={file.id}>
-                <div className="card card_gender_background card_gender_border container_foto">
-                  <img
-                    src={file.url}
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <p className="card-text text-dark">
-                      {file.name}/{file.file_type}/{file.gender}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-              )
+              console.log("hola")
+              if(file.id!==1){
+                return(<Card_cat 
+          src={file.url}
+          name={file.name}
+          type={file.file_type}
+          type_clothes={file.type_clothes?file.type_clothes:file.type_prints}
+          file_number={file.number}
+          category={file.category}
+          file_id={file.id}
+  ></Card_cat>)}
+
+
+
+
+              
               
             })}
             

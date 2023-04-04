@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+/*import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
 import "/workspace/react-flask-hello/src/front/styles/category_list.css";
@@ -25,7 +25,7 @@ const Propspage =(props)=> {
             href={`${config2.HOSTNAME}/${props.url}`}
 
           >
-            <i className="fas fa-chevron-left mb-4 me-2"></i>Back
+          <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
           </a>
           <div className="row ">
             {store.props.array.length
@@ -60,4 +60,4 @@ const Propspage =(props)=> {
   );
 }
 
-export default Propspage;
+export default Propspage;*/

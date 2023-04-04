@@ -4,7 +4,7 @@ import "/workspace/react-flask-hello/src/front/styles/category_list.css";
 import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 import { Link, useNavigate } from "react-router-dom";
 import "/workspace/react-flask-hello/src/front/styles/profile.css";
-
+import Card_cat from "../component/card_cat.js";
 import config from "../store/config.js";
 
 const Profile = () => {
@@ -16,13 +16,10 @@ const Profile = () => {
 
   useEffect(() => {
     actions.getFiles3D();
-  }, []);
-
-  useEffect(() => {
+    actions.getPatterns();
+    actions.getPrints();
     getUser();
-  }, []);
 
-  useEffect(() => {
     if (!localStorage.getItem("access_token")) {
       navigate("/login");
     } else {
@@ -30,12 +27,12 @@ const Profile = () => {
     }
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (store.navigate) {
       navigate(store.navigate);
       actions.navigateNull();
     }
-  }, [store.navigate]);
+  }, [store.navigate]);*/
 
   const getUser = () => {
     fetch(`${config.HOSTNAME}/api/users/${localStorage.user_id}`)
@@ -57,31 +54,28 @@ const Profile = () => {
     }
   };
 
-  const handleAvatarSave = () => {
+  const handleAvatarSave = async () => {
     const avatarInput = document.getElementById("avatar");
     const formData = new FormData();
     formData.append("avatar", avatarInput.files[0]);
-    fetch(`${config.HOSTNAME}/api/change_avatar`, {
+
+    const response = await fetch(`${config.HOSTNAME}/api/change_avatar`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
       body: formData,
-    })
-      .then((response) => {
-        if (response.ok) {
-          setMessage("Avatar updated successfully.");
-          response.json().then((data) => {
-            getUser();
-          });
-          onClose();
-        } else {
-          setMessage("An error occurred while updating the avatar.");
-        }
-      })
-      .catch((error) => {
-        setMessage("An error occurred while updating the avatar.");
-      });
+    });
+
+    if (response.ok) {
+      setMessage("Avatar updated successfully.");
+      await response.json();
+      getUser();
+    } else {
+      setMessage("An error occurred while updating the avatar.");
+    }
+
+    return response.ok;
   };
 
   const handleSave = () => {
@@ -110,13 +104,15 @@ const Profile = () => {
 
   const handlePasswordSave = () => {
     const password = document.getElementById("password-input").value;
-    const confirm_password = document.getElementById("confirm_password-input").value;
+    const confirm_password = document.getElementById(
+      "confirm_password-input"
+    ).value;
     const new_password = document.getElementById("new_password-input").value;
     if (password !== confirm_password) {
       setMessage("Passwords do not match.");
       return;
     }
-    const body = JSON.stringify({password,confirm_password,new_password})
+    const body = JSON.stringify({ password, confirm_password, new_password });
     const token = localStorage.getItem("access_token");
     fetch(`${config.HOSTNAME}/api/password_change`, {
       method: "PUT",
@@ -127,7 +123,7 @@ const Profile = () => {
       body,
     })
       .then((response) => {
-        if (response.status== 200) {
+        if (response.status == 200) {
           setMessage("Password updated successfully.");
           onClose();
         } else {
@@ -198,14 +194,14 @@ const Profile = () => {
       ) : (
         <div className="container-fluid padindg_search_list p_card_gender pading_avatar profile_text">
           <div className="row">
-            <div className="col-lg-6 col-md-6 col-sm-6 p-5">
+            <div className="col-lg-6 col-md-6 col-sm-6">
               <div className="card-body mt-3 text-center">
                 <div>
-                  <h4 >{user.username}</h4>
+                  <h4>{user.username}</h4>
                   <h6 className="text-muted">Your personal account</h6>
                 </div>
                 <i className="far fa-edit"></i>
-                <label htmlFor="avatar" className="form-label pt-3">
+                <label htmlFor="avatar" className="form-label">
                   <img
                     src={user.img}
                     className="avatar_edit rounded-circle me-2 mb-2"
@@ -230,7 +226,7 @@ const Profile = () => {
                   {/* BOTON FAVORITES */}
                   <button
                     type="button"
-                    className="btn btn-dark mb-3 btn-sm me-2 col-lg-6 col-md-6"
+                    className="btn btn-dark mb-3 btn-sm me-2 col-lg-6 col-md-6 btn-orange-night text-btn-profile"
                     onClick={() => navigate("/favorites")}
                   >
                     My favorites
@@ -238,7 +234,7 @@ const Profile = () => {
                   {/* BOTON UPLOAD PRODUCT */}
                   <button
                     type="button"
-                    className="btn btn-dark mb-3 btn-sm me-2 col-lg-6 col-md-6"
+                    className="btn btn-dark mb-3 btn-sm me-2 col-lg-6 col-md-6 btn-orange-night text-btn-profile"
                     onClick={() => navigate("/upload_product")}
                   >
                     Upload new file
@@ -246,7 +242,7 @@ const Profile = () => {
                   {/* BOTON NEW USERNAME */}
                   <button
                     type="button"
-                    className="btn btn-dark mb-3 me-2 btn-sm col-lg-6 col-md-6 "
+                    className="btn btn-dark mb-3 me-2 btn-sm col-lg-6 col-md-6 btn-orange-night text-btn-profile"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
                     data-bs-whatever="@mdo"
@@ -256,7 +252,7 @@ const Profile = () => {
                   {/* BOTON NEW PASSWORD */}
                   <button
                     type="button"
-                    className="btn btn-dark mb-3 me-2 btn-sm col-lg-6 col-md-6"
+                    className="btn btn-dark mb-3 me-2 btn-sm col-lg-6 col-md-6 btn-orange-night text-btn-profile"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal2"
                     data-bs-whatever="@mdo"
@@ -266,7 +262,7 @@ const Profile = () => {
                   {/* BOTON ELIMINAR USUARIO*/}
                   <button
                     type="button"
-                    className="btn btn-danger mb-5 btn-sm me-2 col-lg-6 col-md-6"
+                    className="btn btn-danger mb-5 btn-sm me-2 col-lg-6 col-md-6 btn-danger-night text-btn-profile"
                     onClick={() => handleDeleteUser()}
                   >
                     Delete user
@@ -275,12 +271,16 @@ const Profile = () => {
                     <button
                       type="button"
                       className="btn btn-dark btn-sm"
-                      onClick={() => {
-                        handleAvatarSave();
+                      onClick={async () => {
+                        const success = await handleAvatarSave();
+                        if (success) {
+                          window.location.reload();
+                        }
                       }}
                     >
                       Save Changes
                     </button>
+
                     {/* MODAL NEW USERNAME */}
                     <div
                       className="modal fade"
@@ -310,7 +310,7 @@ const Profile = () => {
                               <div className="mb-3">
                                 <label
                                   htmlFor="username"
-                                  className="col-form-label username_night"
+                                  className="col-form-label"
                                 >
                                   New username:
                                 </label>
@@ -394,7 +394,6 @@ const Profile = () => {
                                   className="form-control"
                                   id="password-input"
                                   placeholder="Current password"
-                                
                                 />
                               </div>
                               <div className="mb-3">
@@ -409,7 +408,6 @@ const Profile = () => {
                                   className="form-control"
                                   id="confirm_password-input"
                                   placeholder="Current password"
-                                
                                 />
                               </div>
                               <div className="mb-3">
@@ -424,7 +422,6 @@ const Profile = () => {
                                   className="form-control"
                                   id="new_password-input"
                                   placeholder="New password"
-                                
                                 />
                               </div>
                             </form>
@@ -459,14 +456,14 @@ const Profile = () => {
             <hr />
             {store.files3d.map((file, id) => {
               if (
-                file.user_id === JSON.parse(localStorage.getItem("user_id"))
+                file.user_id === JSON.parse(localStorage.getItem("user_id")) &&
+                file.id !== 1
               ) {
                 return (
                   <div className="col-lg-2 col-md-3 col-6 my-2 " key={file.id}>
                     <Link
-                      to={`/product_page/${file.number}/${file.id}`}
+                      to={`/product_page/${file.category}/${file.id}`}
                       key={file.id}
-                      onClick={() => SetNumerito(file.number)}
                     >
                       <div className="card-group">
                         <div className="card card_gender_border container_foto  ">
@@ -477,7 +474,7 @@ const Profile = () => {
                           />
                           <div className="card-body">
                             <p className="card-text text-dark text-truncate fs-6 fw-light">
-                              {file.name}/{file.file_type}
+                              {file.name}
                             </p>
                           </div>
                         </div>
@@ -493,16 +490,16 @@ const Profile = () => {
             <h4 className="mb-3">My patterns</h4>
             <hr />
             {store.patterns.map((file, id) => {
-              console.log({file})
+              console.log({ file });
               if (
-                file.user_id === JSON.parse(localStorage.getItem("user_id"))
+                file.user_id === JSON.parse(localStorage.getItem("user_id")) &&
+                file.id !== 1
               ) {
                 return (
                   <div className="col-lg-2 col-md-3 col-6 my-2 " key={file.id}>
                     <Link
-                      to={`/product_page/${file.number}/${file.id}`}
+                      to={`/product_page/${file.category}/${file.id}`}
                       key={file.id}
-                      onClick={() => SetNumerito(file.number)}
                     >
                       <div className="card-group">
                         <div className="card card_gender_border container_foto  ">
@@ -513,7 +510,7 @@ const Profile = () => {
                           />
                           <div className="card-body">
                             <p className="card-text text-dark text-truncate fs-6 fw-light">
-                              {file.name}/{file.file_type}
+                              {file.name}
                             </p>
                           </div>
                         </div>
@@ -530,14 +527,14 @@ const Profile = () => {
             <hr />
             {store.prints.map((file, id) => {
               if (
-                file.user_id === JSON.parse(localStorage.getItem("user_id"))
+                file.user_id === JSON.parse(localStorage.getItem("user_id")) &&
+                file.id !== 1
               ) {
                 return (
                   <div className="col-lg-2 col-md-3 col-6 my-2 " key={file.id}>
                     <Link
-                      to={`/product_page/${file.number}/${file.id}`}
+                      to={`/product_page/${file.category}/${file.id}`}
                       key={file.id}
-                      onClick={() => SetNumerito(file.number)}
                     >
                       <div className="card-group">
                         <div className="card card_gender_border container_foto  ">
@@ -548,7 +545,7 @@ const Profile = () => {
                           />
                           <div className="card-body">
                             <p className="card-text text-dark text-truncate fs-6 fw-light">
-                              {file.name}/{file.file_type}
+                              {file.name}
                             </p>
                           </div>
                         </div>

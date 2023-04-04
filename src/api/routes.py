@@ -290,7 +290,17 @@ def search(search):
     Files3D.gender.ilike(f'%{search}%'),
     Files3D.size.ilike(f'%{search}%'))).all()]
 
-    return jsonify({"files3d": files3d}), 200, {'Content-Type': 'application/json'}
+    patterns = [file.serialize() for file in Patterns.query.filter(or_(Patterns.name.ilike(f'%{search}%'), 
+    Patterns.description.ilike(f'%{search}%'),
+    Patterns.gender.ilike(f'%{search}%'),
+    Patterns.size.ilike(f'%{search}%'))).all()]
+
+    prints = [file.serialize() for file in Prints.query.filter(or_(Prints.name.ilike(f'%{search}%'), 
+    Prints.description.ilike(f'%{search}%'),
+    Prints.gender.ilike(f'%{search}%'),
+    Prints.type_print.ilike(f'%{search}%'))).all()]
+
+    return jsonify({"files3d": files3d,"patterns":patterns,"prints":prints}), 200, {'Content-Type': 'application/json'}
 
 
 

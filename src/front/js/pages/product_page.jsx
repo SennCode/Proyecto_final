@@ -6,6 +6,7 @@ import config2 from "../store/config2";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import Heart from "react-heart";
+import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 
 const ProductPage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,40 @@ const ProductPage = () => {
   const [detalle, setDetalle] = useState({});
   const [loader, setLoader] = useState(true);
   const [active, setActive] = useState(false);
-  
+  const download_archivo=()=>{
+    
+      /*function downloadLink(id) {
+          var ajaxOptions = {
+            url: 'http://httpbin.org/status/' + id
+            };
+            
+            var res = $.ajax(ajaxOptions);
+            
+            function onAjaxDone(data) {
+              
+                location.href = 'http://httpbin.org/bytes/1024';
+            }
+            
+            function onAjaxFail() {
+              alert('Bad ID');
+            }
+            
+            res
+              .done(onAjaxDone)
+                .fail(onAjaxFail)
+            ;
+        }
+        
+      function onDownloadLinkClick(e) {
+          e.preventDefault();
+            var $this = $(this);
+            var id = $this.data('id');
+            downloadLink(id);
+        }
+        
+      $('.download-link').on('click', onDownloadLinkClick);
+    ;*/
+  }
   const setFav_product=async(idp,categoryp)=>{
     const token = localStorage.getItem("access_token");
     const producto_id=idp;
@@ -112,10 +146,10 @@ const ProductPage = () => {
               <div className="col-12">
                 <div className="p-3">
                   <p className="text-muted">
-                    {detalle.gender} / {detalle.type_clothes} /{" "}
+                    {detalle.gender} /
                     {detalle.type_clothes
                       ? detalle.type_clothes
-                      : detalle.type_print}{" "}
+                      : detalle.type_print}
                     / {detalle.name}
                   </p>
                   <Link
@@ -126,17 +160,17 @@ const ProductPage = () => {
                         : detalle.type_print
                     }`}
                   >
-                    <i className="fas fa-chevron-left mb-4 me-2">Back</i>
+                   <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
                   </Link>
                 </div>
               </div>
 
               <div className="card mb-3">
                 <div className="row g-0">
-                  <div className="col-lg-6 col-md-6">
+                  <div className="col-lg-6 col-md-6 p-3">
                     <img
                       src={detalle.url}
-                      className="img-fluid rounded-start"
+                      className="img-fluid rounded-1"
                       alt="..."
                     />
                   </div>
@@ -168,14 +202,21 @@ const ProductPage = () => {
                       <div className="d-flex align-items-center mt-3 pt-2">
                         <button
                           type="button"
-                          className="btn btn-sm btn-primary text_product_page ms-1"
+                          className="btn btn-sm btn-primary text_product_page ms-1 btn-download-night"
+                          onClick={download_archivo}
                         >
+                          
                           Download
                         </button>
-                        <div className="ms-3 mt-3" style={{ width: "2rem" }}>
+                        <a href={Alien} download>
+                        <img src="" alt="Aqui descarga la imagen"/>
+                       </a>
+                        <div className="ms-3 mt-3 press" style={{ width: "2rem" }}>
                           <Heart
                             isActive={active}
-                            onClick={() => setFav_product(detalle.id,detalle.category)}
+                            onClick={() => {setFav_product(detalle.id,detalle.category)
+                            setActive(!active)
+                          }}
                             animationScale={1.25}
                             style={{ marginBottom: "1rem" }}
                           />
@@ -194,12 +235,18 @@ const ProductPage = () => {
                   <p className="text-muted">
                     {detalle.gender} / {detalle.type_clothes}
                   </p>
-                  <a
+                  <Link
                     className="arrow_category_list"
-                    href={`${config2.HOSTNAME}/files3d_category`}
+                    to={`/${params.category}/${detalle.gender}/${
+                      detalle.type_clothes
+                        ? detalle.type_clothes
+                        : detalle.type_print
+                    }`}
                   >
-                    <i className="fas fa-chevron-left mb-4 me-2"></i>Backo
-                  </a>
+                    <i className="fas fa-chevron-left mb-4 me-2">Back</i>
+                  </Link>
+                    
+        
                 </div>
               </div>
 
