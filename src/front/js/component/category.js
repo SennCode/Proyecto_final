@@ -31,9 +31,9 @@ const Category=() =>{
     )
     //paterns
   const [menpatterns,setMenpatterns]=useState([
-    {type:"Hoodies",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1679501873/zip_through_jacket_20211202_men_ekrvfn.png", num:1},
-    {type:"T-shirts",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1679502138/pocket_polo_shirt_20220804_men_thcdhc.png",num:2},
-    {type:"Trousers",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1679502030/zip_off_cargo_20220503_men_qkcva9.png",num:3}]
+    {type:"Hoodies",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1680610331/shcxjhbfc6bhsyuqn7b4.png", num:1},
+    {type:"T-shirts",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1680609878/wmcmzyhzsd39hdknz9qb.png",num:2},
+    {type:"Trousers",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1680610584/rh5eewh26k8pvbcudssp.png",num:3}]
     )
   const [womenpatterns,setWomenpatterns]=useState([
     {type:"Dresses",src:"https://res.cloudinary.com/dwssfgyty/image/upload/v1679502330/bleisure_cover_up_20221010_women_d9z1fh.png", num:1},

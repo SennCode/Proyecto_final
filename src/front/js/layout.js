@@ -17,7 +17,7 @@ import ProductPage from "./pages/product_page.jsx";
 import UploadProduct from "./pages/upload_product.jsx";
 import SearchResults from "./pages/search_results.jsx";
 import Profile from "./pages/profile.jsx";
-
+import Appp from "./component/download_file";
 //create your first component
 const Layout = () => {
   //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -31,6 +31,7 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
+            <Route element={<Appp />} path="/appp" />
             <Route element={<Category />} path="/:category" />
             <Route element={<Pageprops2 />} path="/:category/:gender/:type_clothes" />
             <Route element={<ProductPage />} path="/product_page/:category/:id" />

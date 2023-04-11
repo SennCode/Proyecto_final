@@ -452,7 +452,7 @@ const Profile = () => {
           </div>
           <div className="row text-center">
             {" "}
-            <h4 className="mb-3">My files3D</h4>
+            <h4 className="mb-3 mt-3">My files3D</h4>
             <hr />
             {store.files3d.map((file, id) => {
               if (
@@ -487,7 +487,7 @@ const Profile = () => {
           </div>
           <div className="row text-center">
             {" "}
-            <h4 className="mb-3">My patterns</h4>
+            <h4 className="mb-3 mt-3">My patterns</h4>
             <hr />
             {store.patterns.map((file, id) => {
               console.log({ file });
@@ -523,7 +523,7 @@ const Profile = () => {
           </div>
           <div className="row text-center">
             {" "}
-            <h4 className="mb-3">My prints</h4>
+            <h4 className="mt-3">My prints</h4>
             <hr />
             {store.prints.map((file, id) => {
               if (

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Heart from "react-heart";
 import Alien from "/workspace/react-flask-hello/src/front/img/Alien.png";
 
+import Appp from "../component/download_file";
 const ProductPage = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
@@ -17,9 +18,13 @@ const ProductPage = () => {
   const [detalle, setDetalle] = useState({});
   const [loader, setLoader] = useState(true);
   const [active, setActive] = useState(false);
-  const download_archivo=()=>{
-    
-      /*function downloadLink(id) {
+  const download_archivo = async () => {
+    //const res=await fetch(`${config.HOSTNAME}/api/download_file`, {
+    //  method: "GET",
+    // })
+    // const data=await res.json()
+    // console.log(data)
+    /*function downloadLink(id) {
           var ajaxOptions = {
             url: 'http://httpbin.org/status/' + id
             };
@@ -50,30 +55,23 @@ const ProductPage = () => {
         
       $('.download-link').on('click', onDownloadLinkClick);
     ;*/
-  }
-  const setFav_product=async(idp,categoryp)=>{
+  };
+  const setFav_product = async (idp, categoryp) => {
     const token = localStorage.getItem("access_token");
-    const producto_id=idp;
-    const category=categoryp
-    const valor=()=>{
-      let result=[]
-      if(category==="files3d"){
-        return result=[producto_id,
-                1,
-                1]
-                
-      }else if(category==="patterns"){
-         return result=[1,
-          producto_id,
-          1]
-      }else if(category==="prints"){
-        return result=[1,
-          1,
-          producto_id]
+    const producto_id = idp;
+    const category = categoryp;
+    const valor = () => {
+      let result = [];
+      if (category === "files3d") {
+        return (result = [producto_id, 1, 1]);
+      } else if (category === "patterns") {
+        return (result = [1, producto_id, 1]);
+      } else if (category === "prints") {
+        return (result = [1, 1, producto_id]);
       }
-    }
-    const pre=valor()
-    console.log(pre)
+    };
+    const pre = valor();
+    console.log(pre);
     /*const body=(producto_id,category)=> {
       if(category==="files3d"){
       return { files3d_id: producto_id, patterns_id:1, prints_id: 1 }
@@ -86,19 +84,25 @@ const ProductPage = () => {
     }}
     body(producto_id,category);*/
     //console.log(body)
-    const res=await fetch(`${config.HOSTNAME}/api/set_favorite`, {
+    const res = await fetch(`${config.HOSTNAME}/api/set_favorite`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify({files3d_id:pre[0],patterns_id:pre[1],prints_id:pre[2]}),
-    })
-     const data=await res.json()
-     console.log(data.status)
-      await data.msg!==200?console.log(data.msg):console.log("mala recepcion")
-  }
-  
+      body: JSON.stringify({
+        files3d_id: pre[0],
+        patterns_id: pre[1],
+        prints_id: pre[2],
+      }),
+    });
+    const data = await res.json();
+    console.log(data.status);
+    (await data.msg) !== 200
+      ? console.log(data.msg)
+      : console.log("mala recepcion");
+  };
+
   setTimeout(() => {
     setLoader(false);
   }, 1000);
@@ -127,7 +131,6 @@ const ProductPage = () => {
     console.log(user);
 
     fetchDetalle();
-    
   }, [id, username]);
 
   //const res1 = await fetch ();
@@ -160,7 +163,7 @@ const ProductPage = () => {
                         : detalle.type_print
                     }`}
                   >
-                   <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+                    <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
                   </Link>
                 </div>
               </div>
@@ -205,24 +208,34 @@ const ProductPage = () => {
                           className="btn btn-sm btn-primary text_product_page ms-1 btn-download-night"
                           onClick={download_archivo}
                         >
-                          
                           Download
                         </button>
-                        <a href={Alien} download>
+                        {/* <a href={Alien} download>
                         <img src="" alt="Aqui descarga la imagen"/>
-                       </a>
-                        <div className="ms-3 mt-3 press" style={{ width: "2rem" }}>
+                       </a> */}
+
+                        <div
+                          className="ms-3 mt-3 press"
+                          style={{ width: "2rem" }}
+                        >
                           <Heart
                             isActive={active}
-                            onClick={() => {setFav_product(detalle.id,detalle.category)
-                            setActive(!active)
-                          }}
+                            onClick={() => {
+                              setFav_product(detalle.id, detalle.category);
+                              setActive(!active);
+                            }}
                             animationScale={1.25}
                             style={{ marginBottom: "1rem" }}
                           />
                         </div>
                       </div>
-                      <div className="card-body avatar_padding"></div>
+                      {/* <div className="card-body avatar_padding">
+                        {" "}
+                        <Appp
+                          file_name={detalle.name}
+                          file_url={detalle.url}
+                        ></Appp>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -243,10 +256,8 @@ const ProductPage = () => {
                         : detalle.type_print
                     }`}
                   >
-                    <i className="fas fa-chevron-left mb-4 me-2">Back</i>
+                    <i class="fas fa-arrow-alt-circle-left fa-lg"></i>
                   </Link>
-                    
-        
                 </div>
               </div>
 
@@ -278,8 +289,8 @@ const ProductPage = () => {
                       </ul>
                       <div className="mt-3 pt-2">
                         <button
-                          type="button"
-                          className="btn button_product_page text_product_page btn-sm ms-1"
+                          type="button "
+                          className="btn btn-primary btn-block mb-3 button_login-register"
                           onClick={() => navigate("/register_user")}
                         >
                           Sign Up to download
@@ -291,27 +302,7 @@ const ProductPage = () => {
                 </div>
               </div>
 
-              <div className="card">
-                <div className="row g-0 ">
-                  <div className="col-lg-3 col-md-3 col-3 imgs_small">
-                    <img
-                      src={detalle.url}
-                      className="rounded img-fluid"
-                      alt="..."
-                    />
-                    <img
-                      src={detalle.url}
-                      className="rounded img-fluid"
-                      alt="..."
-                    />
-                    <img
-                      src={detalle.url}
-                      className="rounded img-fluid"
-                      alt="..."
-                    />
-                  </div>
-                </div>
-              </div>
+              
             </div>
           )}
         </div>

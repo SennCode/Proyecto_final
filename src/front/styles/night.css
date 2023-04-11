@@ -46,7 +46,7 @@ body.isNightMode nav {
 
   body.isNightMode .navbar-nav li a {
     color: white;
-    background-color: #000000;
+    background-color: transparent;
   }
   body.isNightMode .background_user_dropdown{
     background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255));
@@ -167,4 +167,51 @@ body.isNightMode nav {
   body.isNightMode .modal-night-btn{
     color: #ffffff !important;
     background-color: rgb(0, 0, 0) !important;
+  }
+
+  body.isNightMode .text_login-register{
+    color: black !important;
+  }
+
+  body.isNightMode .button_login-register{
+    color: rgb(255, 255, 255) !important;
+    background-color: rgb(0, 0, 0) !important;
+    border-color: #000000;
+  }
+
+  body.isNightMode .button_login-register:hover{
+  
+    background-color: rgb(255, 119, 0) !important;
+  }
+
+  body.isNightMode .gradient-custom-2 {
+    /* fallback for old browsers */
+    background: rgb(221, 106, 6),;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(
+      to right,
+      rgb(221, 106, 6),
+      rgb(0, 0, 0)
+    );
+  
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(
+      to right,
+      rgb(221, 106, 6),
+      rgb(0, 0, 0)
+  
+    );
+  }
+  
+  @media (min-width: 768px) {
+    .gradient-form {
+      height: 100vh !important;
+    }
+  }
+  @media (min-width: 769px) {
+    .gradient-custom-2 {
+      border-top-right-radius: 0.3rem;
+      border-bottom-right-radius: 0.3rem;
+    }
   }

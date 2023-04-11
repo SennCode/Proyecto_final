@@ -10,6 +10,7 @@ from sqlalchemy import or_
 from sqlalchemy import and_
 from flask_jwt_extended import get_jwt_identity, create_access_token, jwt_required, JWTManager
 
+import wget
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -621,3 +622,14 @@ def set_favorite():
     db.session.commit()
 
     return jsonify({"msg": favorite.serialize(),"data":user.id}), 200
+
+@api.route('/download_file', methods=['GET'])
+def download_file():
+    #url = 'https://www.python.org/static/img/python-logo@2x.png'
+    #myfile = requests.get(url)
+    #open('downloads/PythonImage.png', 'wb').write(myfile.content)
+    url = "https://www.python.org/static/img/python-logo@2x.png"
+    wget.download(url, 'C:/Users/Millan/Downloads/pythonLogo.png')
+    #C:\Users\Millan\Downloads
+    return jsonify("descarga realizada"), 200
+    

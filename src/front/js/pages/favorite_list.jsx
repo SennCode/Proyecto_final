@@ -11,7 +11,7 @@ function FavoriteList() {
   const [loader, setLoader] = useState(true);
   const [fav_products,setFav_products]=useState({})
   useEffect(() => {
-    console.log("holitatata")
+    
     const call_favs=async()=>{
       const token = localStorage.getItem("access_token");
       const res = await fetch(`${config.HOSTNAME}/api/get_favorites`, {
@@ -23,7 +23,7 @@ function FavoriteList() {
       const data = await res.json();
       setFav_products(data.fav_products)
       console.log(data)
-      console.log("EYOYOYO")
+      
     }
     call_favs();
     setTimeout(() => {

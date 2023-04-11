@@ -2,118 +2,40 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
-import hoodie_black from "/workspace/react-flask-hello/src/front/img/hoodie_black.png";
-import hoodie from "/workspace/react-flask-hello/src/front/img/hoodie.png";
-import hoodie_clonX from "/workspace/react-flask-hello/src/front/img/hoodie_clonX.png";
-import socks from "/workspace/react-flask-hello/src/front/img/socks.png";
-import camiseta_negra from "/workspace/react-flask-hello/src/front/img/camiseta_negra_4geeks_.png";
-
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
 
   return (
-    /* title */
+    <div className="container-fluid justify-content-center video-background">
+      <video
+        src="https://res.cloudinary.com/dwssfgyty/video/upload/v1680601815/Grabacio%CC%81n_de_pantalla_2023-04-04_a_las_11.47.38_dh5pds.mov"
+        autoPlay
+        muted
+        loop
+        className="video-background__video"
+      />
 
-    <div>
-      <div className="container-fluid justify-content-center container-nav">
-        <section id="title">
-          <div className="row">
-            <div className="col-lg-6">
-              <h1 className="text-sm text-lg mt-5 ms-5 h1-title d-flex text-focus-in">
-                Community where you can share 3D files and patterns from the
-                main fashion programs!
-              </h1>
-            </div>
-            <div className="col-lg-6">
-              <p>
-                <img className="img-hoodie img-fluid kenburns-top" src={hoodie_black} />
-              </p>
-            </div>
-          </div>
-        </section>
+      <div className="container-video">
+        <h1 className="text-center text-lg h1-title d-flex text-focus-in h1_titles_home">
+          Community where you can share 3D files, patterns and prints from the main
+          fashion programs!
+        </h1>
       </div>
 
-      {/* featured  */}
-
-      <section id="features">
-        <div className="container-fluid justify-content-center">
-          <div className="row pt-5">
-            <div className="featured-box col-lg-4">
-              <i className="icon fa-solid fa-circle-check fa-4x icon-colorful mb-2"></i>
-              <h3 className="h3-features">Easy to use</h3>
-              <p className="p-features">Download and use</p>
-            </div>
-
-            <div className="featured-box col-lg-4">
-              <i className="icon fa-solid fa-bullseye fa-4x icon-colorful mb-2"></i>
-              <h3 className="h3-features">Elite Clientele</h3>
-              <p className="p-features">Only profesionals</p>
-            </div>
-
-            <div className="featured-box col-lg-4">
-              <i className="icon fa-solid fa-heart fa-4x icon-colorful mb-2"></i>
-              <h3 className="h3-features">Guaranteed to work</h3>
-              <p className="p-features">HD Files</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* carousel */}
-      <section className="pt-5" id="carousel">
-        <h2 className="h2-carousel pb-2 mx-5">
-          The most modern and current designs
-        </h2>
-        <div
-          id="carouselExampleSlidesOnly" data-bs-interval="3000"
-          className="carousel slide"
-          data-bs-ride="carousel"
-        >
-          <div className="carousel-inner">
-            <div className="carousel-item active">
-              <img
-                src={hoodie_clonX}
-                className="img-fluid carousel-1-img"
-                alt="..."
-              />
-            </div>
-            <div className="carousel-item">
-              <img
-                src={hoodie}
-                className="img-fluid carousel-1-img"
-                alt="..."
-              />
-            </div>
-            <div className="carousel-item">
-              <img src={socks} className="img-fluid carousel-1-img" alt="..." />
-            </div>
-            <div className="carousel-item">
-              <img
-                src={hoodie_black}
-                className="img-fluid carousel-1-img"
-                alt="..."
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* cta  */}
-
-      <section id="cta">
+      {/* <section id="cta">
         <div className="container-fluid justify-content-center">
           <div className="row pt-5">
             <div className="featured-box">
               <h3 className="h3-cta justify-content-center">
                 Find your perfect clothing for your personal project or contact
-                the artist directly to create a personalized collection{" "}
+                the artist directly to create a personalized collection
               </h3>
               <p className="p-cta">Download and use</p>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

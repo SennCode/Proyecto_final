@@ -14,8 +14,7 @@
 }
 
 .container-nav {
-  padding-top: 3% ;
-  padding-bottom: 20px;
+  padding-top: 1%;
 }
 
 .hover-navbar {
@@ -44,4 +43,8 @@ a {
 
 .hidden {
   display: none;
+}
+
+.navbar {
+  background-color: transparent !important;
 }

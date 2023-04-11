@@ -83,7 +83,7 @@ export const Navbar = () => {
   };
   
   return (
-    <div className="container-fluid container-nav">
+    <div className="container-fluid container-nav ">
       <nav className="navbar navbar-expand-lg navbar-light navbar-color">
         <div className="container-fluid">
           <Link to="/">
@@ -186,7 +186,7 @@ export const Navbar = () => {
                       height="40"
                     />
                   ) : (
-                    <i className="far fa-user-circle fa-2x me-5 mt-3 mb-3 hover-navbar" />
+                    <i className="far fa-user-circle fa-2x me-5  pb-3 hover-navbar" />
                   )}
                 </a>
                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end background_user_dropdown mt-3">

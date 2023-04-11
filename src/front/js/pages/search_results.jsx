@@ -33,7 +33,7 @@ function SearchResults() {
           >
             <i className="fas fa-chevron-left mb-4 me-2"></i>Back
           </a>
-          <div className="row container">
+          <div className="row ">
             {store.search_results?.map((file, id) => {
               console.log("hola")
               if(file.id!==1){
@@ -46,11 +46,6 @@ function SearchResults() {
           category={file.category}
           file_id={file.id}
   ></Card_cat>)}
-
-
-
-
-              
               
             })}
             

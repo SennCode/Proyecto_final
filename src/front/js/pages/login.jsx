@@ -32,10 +32,10 @@ function Login() {
                     <div className="text-center">
                       {/* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                     style="width: 185px;" alt="logo"/> */}
-                      <h4 className="mt-1 mb-5 pb-1 fs-3 h1_title_create_acount">We are 3Dclothes Team</h4>
+                      <h4 className="mt-1 mb-5 pb-1 fs-3 h1_title_create_acount text_login-register">We are 3Dclothes Team</h4>
                     </div>
 
-                    <p>Please enter your login details</p>
+                    <p className='text_login-register'>Please enter your login details</p>
                     
                     {/* email */}
 
@@ -70,7 +70,7 @@ function Login() {
                     <div className="text-center pt-1 mb-5 pb-1">
                       <div className="d-grid gap-2">
                         <button
-                          className="btn btn-primary btn-block mb-3"
+                          className="btn btn-primary btn-block mb-3 button_login-register"
                           type="button"
                   
                           onClick={()=> { 
@@ -83,8 +83,8 @@ function Login() {
                     </div>
 
                     <div className="d-flex align-items-center justify-content-center pb-4">
-                      <p className="mb-0 me-2">Don't have an account yet?</p>
-                      <Link to="/register_user"><button type="button" className="btn btn-outline-primary">
+                      <p className="mb-0 me-2 text_login-register">Don't have an account yet?</p>
+                      <Link to="/register_user"><button type="button" className="btn btn-outline-primary button_login-register">
                         Sing Up
                       </button></Link>
                       
@@ -95,10 +95,8 @@ function Login() {
                   <div className="text-white px-3 py-4 p-md-5 mx-md-4">
                     <h4 className="mb-4 fs-2">We are more than just a company</h4>
                     <p className="small mb-0 fs-6 fst-italic">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    We are a community passionate about fashion and technology, and we want you to be a part of it.
+                    We love designing 3D clothing, but what matters most to us is connecting with people like you.
                     </p>
                   </div>
                 </div>
